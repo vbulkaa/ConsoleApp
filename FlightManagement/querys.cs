@@ -22,6 +22,11 @@ public class Query
         return _context.Airports.ToList();
     }
 
+    public List<Statuses> GetAllStatuses()
+    {
+        return _context.Statuses.ToList();
+    }
+
     public List<Airports> GetFilteredAirports(string name)
     {
         return _context.Airports.Where(a => a.Name.Contains(name)).ToList();
