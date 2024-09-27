@@ -18,6 +18,14 @@ namespace FlightManagement.enums
 
         BombardierCRJ900,
 
-        Boeing787
+        Boeing787,
+        AirbusA330,
+        Boeing777,
+        Boeing747,
+        AirbusA350,
+        Embraer190,
+        BombardierDash8Q400,
+        AirbusA380,
+        Boeing767
     }
 }
