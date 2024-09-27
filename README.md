@@ -1,5 +1,5 @@
 # Flight Management System
-![Build Status](https://github.com/vbulkaa/ConsoleApp/actions/workflows/ci/badge.svg)
+![CI](https://github.com/vbulkaa/ConsoleApp/actions/workflows/ci/badge.svg)
 ## Описание
 Консольное приложение с использованием .NET Entity Framework Core, содержащее набор классов, моделирующих "Расписание авиарейсов авиакомпании", на основе созданной в лабораторной работе № 1 базой данных MS SQL Server.
 
