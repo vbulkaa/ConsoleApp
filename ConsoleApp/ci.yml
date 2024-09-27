@@ -17,7 +17,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build 
+      - name: Build
         run: dotnet build --configuration Release
 
   build-windows:

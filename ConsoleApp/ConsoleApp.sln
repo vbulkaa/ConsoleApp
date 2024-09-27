@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement", "..\FlightManagement\FlightManagement.csproj", "{22E1065F-A175-4D91-8C0D-A91E207CB6CF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{94F8C2AF-633B-4243-BD52-E881C7640AD0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{39440BF4-1CE5-4FF9-AFC6-4D8EACC475D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{74131EEC-49AB-4C4C-8B1D-CA89A06C7578}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B5E06E1B-F31E-4217-95FC-7C41AA2DBA8C}"
 	ProjectSection(SolutionItems) = preProject
 		ci.yml = ci.yml
 	EndProjectSection
@@ -33,7 +33,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{74131EEC-49AB-4C4C-8B1D-CA89A06C7578} = {94F8C2AF-633B-4243-BD52-E881C7640AD0}
+		{B5E06E1B-F31E-4217-95FC-7C41AA2DBA8C} = {39440BF4-1CE5-4FF9-AFC6-4D8EACC475D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2E2D24C-C3AE-44FD-B1B8-2E0AD60BFA9B}
