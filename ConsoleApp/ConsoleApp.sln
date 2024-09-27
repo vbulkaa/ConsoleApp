@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp.csproj", "{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement", "..\FlightManagement\FlightManagement.csproj", "{22E1065F-A175-4D91-8C0D-A91E207CB6CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2E2D24C-C3AE-44FD-B1B8-2E0AD60BFA9B}
+	EndGlobalSection
+EndGlobal
