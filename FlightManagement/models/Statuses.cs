@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using FlightManagement.enums;
 using System.Threading.Tasks;
+using FlightManagement.DAL.models.enums;
 
 namespace FlightManagement.models
 {

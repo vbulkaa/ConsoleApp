@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FlightManagement;
-using FlightManagement.data;
+using FlightManagement.DAL;
 using FlightManagement.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols;

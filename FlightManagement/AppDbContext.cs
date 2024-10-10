@@ -1,4 +1,5 @@
-﻿using FlightManagement.models;
+﻿using FlightManagement.DAL.Configuration;
+using FlightManagement.models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightManagement.data
+namespace FlightManagement.DAL
 {
-    
+
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -23,22 +24,11 @@ namespace FlightManagement.data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Airports>()
-                .HasKey(a => a.AirportID);
-
-            modelBuilder.Entity<Routes>()
-                 .HasKey(r => r.RouteID);
-
-            modelBuilder.Entity<Statuses>()
-                .HasKey(r => r.StatusID);
-
-            modelBuilder.Entity<Stops>()
-                .HasKey(r => r.StopID);
-
-            modelBuilder.Entity<Flights>()
-                .HasKey(r => r.FlightID);
-
-
+            modelBuilder.ApplyConfiguration(new AirportConfig());
+            modelBuilder.ApplyConfiguration(new FlightConfig());
+            modelBuilder.ApplyConfiguration(new RouteConfig());
+            modelBuilder.ApplyConfiguration(new StatusConfig());
+            modelBuilder.ApplyConfiguration(new StopConfig());
         }
     }
 }

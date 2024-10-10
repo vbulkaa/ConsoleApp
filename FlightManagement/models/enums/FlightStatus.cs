@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightManagement.enums
+namespace FlightManagement.DAL.models.enums
 {
 
     public enum FlightStatus
     {
-       
+
         Вылет,
-      
+
         Промежуточный,
 
         Прилёт

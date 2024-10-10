@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp.csproj", "{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp.csproj", "{DA08A681-53B2-4EA5-A4DC-9AFCA9EDDE7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement", "..\FlightManagement\FlightManagement.csproj", "{22E1065F-A175-4D91-8C0D-A91E207CB6CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightManagement.DAL", "..\FlightManagement\FlightManagement.DAL.csproj", "{22E1065F-A175-4D91-8C0D-A91E207CB6CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{39440BF4-1CE5-4FF9-AFC6-4D8EACC475D6}"
 EndProject
@@ -13,6 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		ci.yml = ci.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement.DTO", "..\FlightManagement.DTO\FlightManagement.DTO.csproj", "{4F26D944-595C-49DB-8C0D-2CFA51C38A5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement.BLL", "..\FlightManagement.BLL\FlightManagement.BLL.csproj", "{9E5796BC-244F-4BBB-9A94-2555E1F25F64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement.ASP", "..\FlightManagement.ASP\FlightManagement.ASP.csproj", "{63C0BA45-406D-4ECE-984C-EA938E6F6632}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +34,18 @@ Global
 		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22E1065F-A175-4D91-8C0D-A91E207CB6CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F26D944-595C-49DB-8C0D-2CFA51C38A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F26D944-595C-49DB-8C0D-2CFA51C38A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F26D944-595C-49DB-8C0D-2CFA51C38A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F26D944-595C-49DB-8C0D-2CFA51C38A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E5796BC-244F-4BBB-9A94-2555E1F25F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E5796BC-244F-4BBB-9A94-2555E1F25F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E5796BC-244F-4BBB-9A94-2555E1F25F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E5796BC-244F-4BBB-9A94-2555E1F25F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C0BA45-406D-4ECE-984C-EA938E6F6632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C0BA45-406D-4ECE-984C-EA938E6F6632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C0BA45-406D-4ECE-984C-EA938E6F6632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C0BA45-406D-4ECE-984C-EA938E6F6632}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
