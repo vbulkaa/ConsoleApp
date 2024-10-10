@@ -46,7 +46,7 @@ public class Query
                 FlightNumber = f.FlightNumber,
                 RouteDate = r.Date
             }))
-            .AsEnumerable() // Преобразуем в IEnumerable, чтобы избежать проблемы с LINQ
+            .AsEnumerable() 
             .Select(x => (x.FlightNumber, x.RouteDate)) // Преобразуем в кортежи
             .ToList();
     }

@@ -23,8 +23,6 @@ using (var context = new AppDbContext(builder.Options))
     {
         Console.WriteLine("Выберите действие:");
         Console.WriteLine("1. Выборка всех аэропортов");
-        Console.WriteLine("Выберите действие:");
-        Console.WriteLine("1. Выборка всех аэропортов");
         Console.WriteLine("2. Фильтрация аэропортов по имени");
         Console.WriteLine("3. Получить количество маршрутов для рейса");
         Console.WriteLine("4. Получить рейсы и их маршруты");
@@ -131,7 +129,7 @@ using (var context = new AppDbContext(builder.Options))
                 break;
 
             default:
-                Console.WriteLine("Некорректный выбор. Попробуйте снова.");
+                Console.WriteLine("Некорректный выбор.");
                 break;
         }
     }
