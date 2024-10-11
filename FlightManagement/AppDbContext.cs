@@ -22,6 +22,7 @@ namespace FlightManagement.DAL
         public DbSet<Statuses> Statuses { get; set; }
         public DbSet<Stops> Stops { get; set; }
 
+        //Применение конфигураций
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AirportConfig());

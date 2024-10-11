@@ -13,9 +13,9 @@ namespace FlightManagement.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<Airports> builder)
         {
-            builder.HasKey(a => a.AirportID); // Настройка первичного ключа
-            builder.Property(a => a.Name).IsRequired(); // Обязательное поле
-            builder.Property(a => a.Location).IsRequired(); // Обязательное поле
+            builder.HasKey(a => a.AirportID); 
+            builder.Property(a => a.Name).IsRequired(); 
+            builder.Property(a => a.Location).IsRequired(); 
         }
     }
 }

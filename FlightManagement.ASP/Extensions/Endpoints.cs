@@ -8,18 +8,20 @@ using FlightManagement.DTO.Stops;
 
 namespace FlightManagement.ASP.Extensions
 {
+    /*Отвечает за настройку конечных точек(endpoints) для обработки http запросов*/
     public static class Endpoints
     {
         private readonly static string _styles = "<style>" +
-            "a {display: block; padding: 5px 10px; font-size: 130%; " +
+            "a {display: block; padding: 10px 10px; font-size: 150%; " +
             "background-color: #BBF4FF; text-decoration: none; color: black;" +
-            "margin-top: 10px; border-radius: 5px;}" +
+            "margin-top: 15px; border-radius: 0px;}" +
             "body {display: flex; flex-direction: column; align-items: center;}" +
             "h1 {text-align: center;}" +
             ".bg-yellow {background-color: #FFF86E;}" +
             ".bg-green {background-color: #49F883;}" +
             "</style>";
 
+        //Создает html-шаблон для страницы
         public static string GetHtmlTemplate(string title, string body)
         {
             return "<html><head>" +
@@ -31,7 +33,7 @@ namespace FlightManagement.ASP.Extensions
                 "</body></html>";
         }
 
-       
+       //Обрабатывает запросы на получение инфо о браузере
         public static void Info(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -56,6 +58,8 @@ namespace FlightManagement.ASP.Extensions
                     "<a href=\"/\">Back</a><br>"));
             });
         }
+
+        //Получает список аэропортов и отображает его в виде HTML-таблицы
         public static void AirportsTable(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -86,6 +90,7 @@ namespace FlightManagement.ASP.Extensions
             });
         }
 
+        //Получает список рейсов и отображает его в виде HTML-таблицы
         public static void FlightsTable(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -118,6 +123,7 @@ namespace FlightManagement.ASP.Extensions
             });
         }
 
+        
         public static void RoutesTable(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -150,6 +156,8 @@ namespace FlightManagement.ASP.Extensions
             });
         }
 
+        //Предоставляет форму для поиска рейсов с
+        //возможностью запоминания выбранных значений в сессии.
         public static void StatusesTable(IApplicationBuilder app)
         {
             app.Run(async context =>
@@ -216,26 +224,33 @@ namespace FlightManagement.ASP.Extensions
 
         }
 
-        //Запоминание кукки 
+        //Запоминание куки 
+        //Предоставляет форму для поиска аэропортов с
+        //возможностью запоминания выбранных значений в cookies.
         public static void AirportsSearch(IApplicationBuilder app)
         {
-            app.Run(async context =>
+            app.Run(async context => // определяет конечную точку, которая будет обрабатывать HTTP-запросы
             {
-                // Предположим, у вас есть сервис для получения данных об аэропортах
-                IAirportService airportsService = context.RequestServices.GetService<IAirportService>();
-                IEnumerable<AirportsDto> airports = await airportsService.GetAllAirports();
+                
+                IAirportService airportsService = context.RequestServices.GetService<IAirportService>(); //Получаем данные об аэропортах
+                IEnumerable<AirportsDto> airports = await airportsService.GetAllAirports(); 
 
+                //Ключи куки( для хранения данных), они будут использоваться для доступа к значениям,
+                //которые вводит пользователь
                 string keyName = "AirportName";
                 string keySelect = "AirportSelect";
                 string keyMultiselect = "AirportMultiselect";
 
+                //HTML код для страницы 
                 string htmlString =
                     "<a href=\"/\">Back</a><br>" +
                     "<form method=\"GET\">" +
-                    $"<input id=\"name-input\" type=\"text\" name=\"{keyName}\" placeholder=\"Airport Name\" " +
-                    $"value=\"{context.Request.Cookies[keyName]}\"/><br><br>" +
-                    $"<select name=\"{keySelect}\"><option>Default</option>";
+                    $"<input id=\"name-input\" type=\"text\" name=\"{keyName}\" placeholder=\"Airport Name\" " + //Cоздается поле ввода для имени аэропорта, 
+                    $"value=\"{context.Request.Cookies[keyName]}\"/><br><br>" + //если есть значение по ключу 
+                    $"<select name=\"{keySelect}\"><option>Default</option>"; //Оно будет отображаться в поле
 
+                //Для каждого аэропорта из списка airports добавляется эл options в выпадающий список
+                //Если аэропорт соответствует значению, сохраненному в кукки по ключу keySelect, он будет помечен как выбранный
                 foreach (var airport in airports)
                 {
                     if ($"{airport.Name} ({airport.AirportID})" == context.Request.Cookies[keySelect])
@@ -244,12 +259,16 @@ namespace FlightManagement.ASP.Extensions
                         htmlString += $"<option>{airport.Name} ({airport.AirportID})</option>";
                 }
 
+                //Создание многострочного выпадающего списка
                 htmlString += $"</select><br><br><select multiple name=\"{keyMultiselect}\" size=\"10\">";
+                
 
                 string[] selectedItemsArr = { };
                 if (context.Request.Cookies[keyMultiselect] is not null)
                     selectedItemsArr = context.Request.Cookies[keyMultiselect].Split(',');
 
+                //Каждому аэропорту добавляется элемент <option>, и если он содержится в selectedItemsArr,
+                //он будет отмечен как выбранный
                 foreach (var airport in airports)
                 {
                     bool isContains = selectedItemsArr.Contains($"{airport.Name} ({airport.AirportID})");
@@ -260,6 +279,7 @@ namespace FlightManagement.ASP.Extensions
                         htmlString += $"<option>{airport.Name} ({airport.AirportID})</option>";
                 }
 
+                //Завершение списка и добавление поиска
                 htmlString += "</select><br><br>" +
                     "<button type=\"submit\">Search</button>" +
                     "</form>";
@@ -271,7 +291,7 @@ namespace FlightManagement.ASP.Extensions
 
                 // Сохраняем данные в куки
                 if (airportName is not null)
-                    context.Response.Cookies.Append(keyName, airportName);
+                    context.Response.Cookies.Append(keyName, airportName); //добавление куки в ответ, который будет отправлен клиенту
 
                 if (airportSelected is not null)
                     context.Response.Cookies.Append(keySelect, airportSelected);
@@ -279,23 +299,27 @@ namespace FlightManagement.ASP.Extensions
                 if (airportMultiselected is not null)
                     context.Response.Cookies.Append(keyMultiselect, airportMultiselected);
 
+                //Ответ
                 await context.Response.WriteAsync(GetHtmlTemplate("Airports", htmlString));
             });
         }
 
         // запоминание в сессию
+
         public static void FlightsSearch(IApplicationBuilder app)
         {
             app.Run(async context =>
             {
-                // Предположим, у вас есть сервис для получения данных о рейсах
+                
                 IFlightService flightsService = context.RequestServices.GetService<IFlightService>();
                 IEnumerable<FlightsDto> flights = await flightsService.GetAllFlights();
 
+                //Определяются строки, которые будут использоваться как ключи для хранения данных в сессии
                 string keyName = "FlightName";
                 string keySelect = "FlightSelect";
                 string keyMultiselect = "FlightMultiselect";
 
+                //Формирование строки, которая будет содержать html код
                 string htmlString =
                     "<a href=\"/\">Back</a><br>" +
                     "<form>" +
@@ -303,6 +327,7 @@ namespace FlightManagement.ASP.Extensions
                     $"value=\"{context.Session.GetString(keyName)}\"/><br><br>" +
                     $"<select name=\"{keySelect}\"><option>Default</option>";
 
+                //Заполнение выпадающего списка
                 foreach (var flight in flights)
                 {
                     if ($"{flight.FlightNumber} ({flight.FlightID})" == context.Session.GetString(keySelect))
@@ -311,12 +336,15 @@ namespace FlightManagement.ASP.Extensions
                         htmlString += $"<option>{flight.FlightNumber} ({flight.FlightID})</option>";
                 }
 
+                //Создание многострочного выпадающего списка
                 htmlString += $"</select><br><br><select multiple name=\"{keyMultiselect}\" size=\"10\">";
 
+                //Извлечение выбранных значений
                 string[] selectedItemsArr = { };
                 if (context.Session.GetString(keyMultiselect) is not null)
                     selectedItemsArr = context.Session.GetString(keyMultiselect).Split(',');
 
+                //Заполнение многострочного выпадающего списка
                 foreach (var flight in flights)
                 {
                     bool isContains = selectedItemsArr.Contains($"{flight.FlightNumber} ({flight.FlightID})");

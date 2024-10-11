@@ -14,8 +14,8 @@ namespace FlightManagement.DAL.Configuration
         public void Configure(EntityTypeBuilder<Stops> builder)
         {
             builder.HasKey(s => s.StopID); // Настройка первичного ключа
-            builder.Property(s => s.ArrivalTime).IsRequired(); // Обязательное поле
-            builder.Property(s => s.DepartureTime).IsRequired(); // Обязательное поле
+            builder.Property(s => s.ArrivalTime).IsRequired(); 
+            builder.Property(s => s.DepartureTime).IsRequired(); 
 
             builder.HasOne(s => s.Route)
                 .WithMany(r => r.Stops) // Настройка отношения

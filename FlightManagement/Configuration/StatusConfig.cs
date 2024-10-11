@@ -14,7 +14,7 @@ namespace FlightManagement.DAL.Configuration
         public void Configure(EntityTypeBuilder<Statuses> builder)
         {
             builder.HasKey(s => s.StatusID); // Настройка первичного ключа
-            builder.Property(s => s.StatusName).IsRequired(); // Обязательное поле
+            builder.Property(s => s.StatusName).IsRequired();
         }
     }
 }

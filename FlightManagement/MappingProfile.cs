@@ -13,31 +13,32 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL
 {
+    //для преобразования объектов между различными слоями приложения
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            // Мappings for Airports
+            //Правила маппинга
             CreateMap<Airports, AirportsDto>();
             CreateMap<AirportsForCreationDto, Airports>();
             CreateMap<AirportsForUpdateDto, Airports>();
 
-            // Мappings for Flights
+            
             CreateMap<Flights, FlightsDto>();
             CreateMap<FlightsForCreationDto, Flights>();
             CreateMap<FlightsForUpdateDto, Flights>();
 
-            // Мappings for Routes
+           
             CreateMap<Routes, RoutesDto>();
             CreateMap<RoutesForCreationDto, Routes>();
             CreateMap<RoutesForUpdateDto, Routes>();
 
-            // Mappings for Statuses
+            
             CreateMap<Statuses, StatusesDto>();
             CreateMap<StatusesForCreationDto, Statuses>();
             CreateMap<StatusesForUpdateDto, Statuses>();
 
-            // Mappings for Stops
+            
             CreateMap<Stops, StopsDto>();
             CreateMap<StopsForCreationDto, Stops>();
             CreateMap<StopsForUpdateDto, Stops>();

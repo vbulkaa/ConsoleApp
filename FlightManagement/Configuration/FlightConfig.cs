@@ -14,12 +14,12 @@ namespace FlightManagement.DAL.Configuration
         public void Configure(EntityTypeBuilder<Flights> builder)
         {
             builder.HasKey(f => f.FlightID); // Настройка первичного ключа
-            builder.Property(f => f.FlightNumber).IsRequired(); // Обязательное поле
-            builder.Property(f => f.AircraftType).IsRequired(); // Обязательное поле
+            builder.Property(f => f.FlightNumber).IsRequired(); 
+            builder.Property(f => f.AircraftType).IsRequired(); 
             builder.Property(f => f.TicketPrice)
                 .HasColumnType("decimal(18,2)") // Указание типа данных
-                .IsRequired() // Обязательное поле
-                .HasDefaultValue(0); // Значение по умолчанию
+                .IsRequired() 
+                .HasDefaultValue(0);
 
             builder.HasMany(f => f.Routes)
                 .WithOne(r => r.Flight) // Настройка отношения один-ко-многим

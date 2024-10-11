@@ -12,7 +12,8 @@ namespace FlightManagement.DAL.Repositories
 {
     public class AirportsRepository : RepositoryBase<Airports>, IAirportsRepository
     {
-        private readonly IMemoryCache _memoryCache;
+        private readonly IMemoryCache _memoryCache; //Хранит экземпляр кэша в памяти,
+                                                    //который используется для оптимизации доступа к часто запрашиваемым данным
 
         public AirportsRepository(AppDbContext dbContext, IMemoryCache memoryCache)
             : base(dbContext)
