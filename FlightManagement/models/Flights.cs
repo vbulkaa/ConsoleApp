@@ -30,5 +30,7 @@ namespace FlightManagement.models
             get => Enum.TryParse(AircraftType, out AircraftType status) ? status : throw new ArgumentException("Invalid status");
             set => AircraftType = value.ToString(); // Сохраняйте как строку
         }
+
+        
     }
 }
