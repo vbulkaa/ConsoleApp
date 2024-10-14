@@ -1,0 +1,21 @@
+﻿@model IEnumerable<FlightManagement.models.Airports>
+
+<h1>Airports</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var airport in Model)
+        {
+            <tr>
+                <td>@airport.Name</td>
+                <td>@airport.Location</td>
+            </tr>
+        }
+    </tbody>
+</table>
