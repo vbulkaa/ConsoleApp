@@ -1,9 +1,11 @@
 ﻿using FlightManagement.DAL.Configuration;
 using FlightManagement.models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlightManagement.DAL.models.Users;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +14,8 @@ namespace FlightManagement.DAL
 
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+         : base(options)
         {
         }
 
@@ -21,10 +24,12 @@ namespace FlightManagement.DAL
         public DbSet<Routes> Routes { get; set; }
         public DbSet<Statuses> Statuses { get; set; }
         public DbSet<Stops> Stops { get; set; }
+        public DbSet<User> Users { get; set; }
 
         //Применение конфигураций
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AirportConfig());
             modelBuilder.ApplyConfiguration(new FlightConfig());
             modelBuilder.ApplyConfiguration(new RouteConfig());

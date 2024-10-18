@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using FlightManagement.DAL;
 using FlightManagement.ASPnet.Extensions;
 using AutoMapper;
+using FlightManagement.DAL.models.Users;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,10 @@ builder.Services.AddSession(); //поддержку сессий, что позволяет хранить состоян
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
