@@ -22,41 +22,37 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Главная</a>
                             </li>
-
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="IndexAdmin">Управление авиарейсами</a>
+                                    <a class="nav-link text-dark" asp-controller="Flight" asp-action="IndexAdmin">Управление авиарейсами</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index">Авиарейсы</a>
+                                    <a class="nav-link text-dark" asp-controller="Flight" asp-action="Index">Авиарейсы</a>
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Route" asp-action="Index">Маршруты</a>
+                                <a class="nav-link text-dark" asp-controller="Route" asp-action="Index">Маршруты</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Airport" asp-action="Index">Аэропорты</a>
+                                <a class="nav-link text-dark" asp-controller="Airport" asp-action="Index">Аэропорты</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Выход</a>
                             </li>
-
-
                         }
                         else
                         {
-
                             <li class="nav-item">
-                                <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
+                                <a class="btn btn-outline-primary me-2" asp-controller="Account" asp-action="Login">Вход</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-outline-secondary" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
+                                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Register">Регистрация</a>
                             </li>
                         }
                     </ul>

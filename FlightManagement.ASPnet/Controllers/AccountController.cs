@@ -19,29 +19,6 @@ namespace FlightManagement.ASPnet.Controllers
         [HttpGet]
         public IActionResult Login() => View();
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginUser model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
-        //        if (result.Succeeded)
-        //        {
-        //            var user = await _userManager.FindByNameAsync(model.UserName);
-        //            if (user.IsAdmin)
-        //            {
-        //                return RedirectToAction("Index", "Home"); // Перенаправление на страницу администратора
-        //            }
-        //            else
-        //            {
-        //                return RedirectToAction("Index", "Home"); // Перенаправление для обычного пользователя
-        //            }
-        //        }
-        //        ModelState.AddModelError(string.Empty, "Неверный вход.");
-        //    }
-        //    return View(model);
-        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginUser model)
@@ -52,20 +29,43 @@ namespace FlightManagement.ASPnet.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.UserName);
-                    if (user != null)
+                    if (user.IsAdmin)
                     {
-                        // Проверка роли
-                        if (await _userManager.IsInRoleAsync(user, "Admin"))
-                        {
-                            return RedirectToAction("Index", "Home"); // Перенаправление на страницу админа
-                        }
-                        return RedirectToAction("Index", "Home"); // Для обычных пользователей
+                        return RedirectToAction("Index", "Home"); // Перенаправление на страницу администратора
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home"); // Перенаправление для обычного пользователя
                     }
                 }
                 ModelState.AddModelError(string.Empty, "Неверный вход.");
             }
             return View(model);
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginUser model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            var user = await _userManager.FindByNameAsync(model.UserName);
+        //            if (user != null)
+        //            {
+        //                // Проверка роли
+        //                if (await _userManager.IsInRoleAsync(user, "Admin"))
+        //                {
+        //                    return RedirectToAction("Index", "Home"); // Перенаправление на страницу админа
+        //                }
+        //                return RedirectToAction("Index", "Home"); // Для обычных пользователей
+        //            }
+        //        }
+        //        ModelState.AddModelError(string.Empty, "Неверный вход.");
+        //    }
+        //    return View(model);
+        //}
 
         [HttpGet]
         public IActionResult Register() => View();
@@ -86,14 +86,14 @@ namespace FlightManagement.ASPnet.Controllers
                     IsAdmin = false // регристрирующийся пользователь по умолчанию становится обычным
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //if (result.Succeeded)
-                //{
-                //    // установка куки
-                //    await _signInManager.SignInAsync(user, isPersistent: false);
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //foreach (var error in result.Errors)
-                //    ModelState.AddModelError(string.Empty, error.Description);
+                if (result.Succeeded)
+                {
+                    // установка куки
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
                 if (result.Succeeded)
                 {
                     if (user.IsAdmin)

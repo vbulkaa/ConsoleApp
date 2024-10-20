@@ -1,64 +1,35 @@
 ﻿using FlightManagement.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using static System.Formats.Asn1.AsnWriter;
 
-using System;
-using System.Collections.Generic;
-using FlightManagement.DAL.models.enums;
-
-using System;
-using System.Collections.Generic;
-using FlightManagement.DAL.models.enums;
 
 namespace FlightManagement.DAL
 {
-    public static class DbInitializer
+    public class DbInitializer
     {
-        public static List<Airports> Airports { get; private set; }
-        public static List<Flights> Flights { get; private set; }
-        public static List<Statuses> Statuses { get; private set; }
-        public static List<Routes> Routes { get; private set; }
-        public static List<Stops> Stops { get; private set; }
+        private readonly AppDbContext _context;
+        private readonly ILogger<DbInitializer> _logger;
+        public static List<Routes> Routes { get; private set; } = new List<Routes>();
+        public static List<Stops> Stops { get; private set; } = new List<Stops>();
 
-        private static string[] aircraftTypes = new[]
+        public DbInitializer(AppDbContext context, ILogger<DbInitializer> logger)
         {
-            "AirbusA320",
-            "Boeing737",
-            "Embraer175",
-            "BombardierCRJ900",
-            "Boeing787",
-            "AirbusA330",
-            "Boeing777",
-            "Boeing747",
-            "AirbusA350",
-            "Embraer190",
-            "BombardierDash8Q400",
-            "AirbusA380",
-            "Boeing767"
-        };
-
-        private static Random random = new Random();
-
-        public static void Initialize()
+            _context = context;
+            _logger = logger;
+        }
+        public static void Initialize(AppDbContext context, ILogger logger)
         {
-            Airports = new List<Airports>();
-            Statuses = new List<Statuses>();
-            Flights = new List<Flights>();
-            Routes = new List<Routes>();
-            Stops = new List<Stops>();
+            // Убедиться, что база данных создана
+            context.Database.EnsureCreated();
 
-            // Инициализация статусов
-            Statuses.Add(new Statuses { StatusID = 1, StatusName = "Вылет" });
-            Statuses.Add(new Statuses { StatusID = 2, StatusName = "Промежуточный" });
-            Statuses.Add(new Statuses { StatusID = 3, StatusName = "Прилет" });
-
-            // Предоставленный список аэропортов
-            var airportsData = new (string Location, string Airport)[]
+            if (context.Airports.Any() || context.Flights.Any() || context.Statuses.Any() || context.Routes.Any() || context.Stops.Any())
             {
-                ("Abakan", "Abakan International Airport"),
+                logger.LogInformation("Database already initialized.");
+                return; // База данных уже инициализирована
+            }
+
+            var airportsData = new (string Location, string Airport)[]
+            { ("Abakan", "Abakan International Airport"),
                 ("Anadyr", "Ugolny Airport"),
                 ("Anapa", "Anapa Airport"),
                 ("Arkhangelsk", "Talagi Airport"),
@@ -129,68 +100,95 @@ namespace FlightManagement.DAL
                 ("Grodno", "Hrodna Airport"),
                 ("Gomel", "Gomel Airport"),
                 ("Minsk", "Minsk International Airport")
+
             };
 
-            // Инициализация аэропортов
-            foreach (var airport in airportsData)
+            // Инициализация статусов
+            var statuses = new List<Statuses>
             {
-                Airports.Add(new Airports
-                {
-                    Name = airport.Airport,
-                    Location = airport.Location
-                });
-            }
+                 new Statuses { StatusName = "Вылет" },
+                 new Statuses { StatusName = "Промежуточный" },
+                 new Statuses { StatusName = "Прилет" }
+            };
 
-            // Инициализация рейсов (не менее 500 записей)
+            context.Statuses.AddRange(statuses);
+            context.SaveChanges();
+
+            // Инициализация аэропортов
+            var airports = airportsData.Select(airport => new Airports
+            {
+                Name = airport.Airport,
+                Location = airport.Location
+            }).ToList();
+
+            context.Airports.AddRange(airports);
+            context.SaveChanges();
+            logger.LogInformation($"{airports.Count} airports initialized.");
+            // Инициализация рейсов
+            var flights = new List<Flights>();
+            var aircraftTypes = new[]
+            {
+                "AirbusA320", "Boeing737", "Embraer175", "BombardierCRJ900",
+                "Boeing787", "AirbusA330", "Boeing777", "Boeing747",
+                "AirbusA350", "Embraer190", "BombardierDash8Q400", "AirbusA380", "Boeing767"
+            };
+
+            var random = new Random();
             for (int i = 1; i <= 500; i++)
             {
-                Flights.Add(new Flights
+                var flight = new Flights
                 {
                     FlightNumber = $"FL-{i:00}",
-                    AircraftType = aircraftTypes[random.Next(0, aircraftTypes.Length)], // Используем массив
+                    AircraftType = aircraftTypes[random.Next(aircraftTypes.Length)],
                     TicketPrice = random.Next(100, 1000)
-                });
+                };
+                flights.Add(flight);
             }
 
-            // Инициализация маршрутов и остановок (не менее 2000 остановок)
-            foreach (var flight in Flights)
+            context.Flights.AddRange(flights);
+            context.SaveChanges();
+            logger.LogInformation($"{flights.Count} flights initialized.");
+            var routes = new List<Routes>(); 
+            var stops = new List<Stops>();
+
+            // Инициализация маршрутов и остановок
+            foreach (var flight in flights)
             {
-                // Создание одного маршрута для каждого рейса
                 var route = new Routes
                 {
-                    FlightID = flight.FlightID, // Убедитесь, что FlightID существует
-                    DepartureTime = TimeSpan.FromHours(10 + Flights.IndexOf(flight) % 24),
-                    Date = DateTime.Today.AddDays(Flights.IndexOf(flight) % 30)
+                    RouteID = flight.FlightID, // Используем FlightID как RouteID
+                    FlightID = flight.FlightID,
+                    DepartureTime = TimeSpan.FromHours(random.Next(5, 22)), // Случайное время вылета
+                    Date = DateTime.Today.AddDays(random.Next(0, 30)) // Случайная дата в пределах 30 дней
                 };
-                Routes.Add(route);
 
-                // Создание остановок
-                for (int j = 0; j < 2; j++) // 2 промежуточные остановки
+                context.Routes.Add(route);
+                context.SaveChanges(); // Сохраняем маршрут, чтобы получить его ID
+                logger.LogInformation($"Route for flight {flight.FlightNumber} initialized.");
+
+                // Создаем 3 остановки
+                for (int j = 1; j <= 3; j++)
                 {
-                    var airportIndex = random.Next(0, Airports.Count);
-                    var statusIndex = j == 0 ? 1 : 2; // Статус "Вылет" для первой остановки, "Промежуточный" для второй
+                    var airportIndex = random.Next(airports.Count);
+                    var statusIndex = j == 61 ? 61 : (j == 62 ? 62 : 63); // Вылет, промежуточный, прилет
 
-                    Stops.Add(new Stops
+                    var stop = new Stops
                     {
+                        StopID = flight.FlightID * 10 + j, // Уникальный StopID
                         RouteID = route.RouteID,
-                        AirportID = Airports[airportIndex].AirportID,
-                        ArrivalTime = TimeSpan.FromHours(12 + j),
-                        DepartureTime = TimeSpan.FromHours(14 + j),
-                        StatusID = statusIndex
-                    });
-                }
+                        AirportID = airports[airportIndex].AirportID,
+                        ArrivalTime = route.DepartureTime.Add(TimeSpan.FromHours(j)), // Время прибытия через 1, 2, 3 часа
+                        DepartureTime = route.DepartureTime.Add(TimeSpan.FromHours(j + 0.5)), // Отправление через 30 минут после прибытия
+                        StatusID = statusIndex // Устанавливаем статус
+                    };
 
-                // Добавляем финальную остановку (прилет)
-                var arrivalAirportIndex = random.Next(0, Airports.Count);
-                Stops.Add(new Stops
-                {
-                    RouteID = route.RouteID,
-                    AirportID = Airports[arrivalAirportIndex].AirportID,
-                    ArrivalTime = TimeSpan.FromHours(16),
-                    DepartureTime = TimeSpan.FromHours(17),
-                    StatusID = 3 // Прилет
-                });
+                    context.Stops.Add(stop);
+                }
             }
+
+            context.SaveChanges(); // Сохраняем все остановки в конце
+            logger.LogInformation($"{context.Routes.Count()} routes and {context.Stops.Count()} stops initialized.");
         }
+
     }
 }
