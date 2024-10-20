@@ -13,6 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+// Добавление логирования
+builder.Logging.AddConsole();
+
 // Регистрация сервиса с использованием Scoped lifetime
 //builder.Services.AddScoped<IMyService, MyService>();
 
@@ -46,6 +50,13 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 var app = builder.Build();
 
+/*builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+});*/
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -62,9 +73,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Настройка маршрутов
-app.Map("/Airports", Endpoints.AirportsTable);
+app.Map("/Inicialize", Endpoints.AirportsTable);
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
