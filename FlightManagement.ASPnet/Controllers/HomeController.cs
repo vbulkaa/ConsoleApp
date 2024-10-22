@@ -18,6 +18,11 @@ namespace FlightManagement.ASPnet.Controllers
             return View();
         }
 
+        public IActionResult Tables()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
