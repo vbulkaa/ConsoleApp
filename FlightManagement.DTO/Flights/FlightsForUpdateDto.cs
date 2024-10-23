@@ -8,6 +8,7 @@ namespace FlightManagement.DTO.Flights
 {
     public class FlightsForUpdateDto
     {
+        public int FlightID { get; set; }
         public string FlightNumber { get; set; }
         public string AircraftType { get; set; }
         public decimal TicketPrice { get; set; }

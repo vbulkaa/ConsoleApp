@@ -1,5 +1,6 @@
 ﻿using FlightManagement.DAL.models.Users;
 using System;
+using FlightManagement.DAL.Interfaces.Repositories.Base;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

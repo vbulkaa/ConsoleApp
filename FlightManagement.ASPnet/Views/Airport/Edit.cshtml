@@ -1,0 +1,20 @@
+﻿@model FlightManagement.DTO.Airport.AirportsForUpdateDto
+
+<h1>Редактировать аэропорт</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="AirportID" />
+    <div>
+        <label>Название:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label>Локация:</label>
+        <input asp-for="Location" />
+        <span asp-validation-for="Location"></span>
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+

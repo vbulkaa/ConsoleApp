@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using FlightManagement.BLL.Interfaces.Services;
 using FlightManagement.DAL.Interfaces;
+using FlightManagement.DTO.Airport;
 using FlightManagement.DTO.Rotes;
 using FlightManagement.models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,43 +24,55 @@ namespace FlightManagement.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoutesDto>> GetAllRoutes()
+        public async Task<Routes> Create(RoutesForCreationDto entityForCreation)
         {
-            var routes = await _repositoryManager.RoutesRepository.GetAll(false);
-            return _mapper.Map<IEnumerable<RoutesDto>>(routes);
+            var entity = _mapper.Map<Routes>(entityForCreation);
+
+            await _repositoryManager.RoutesRepository.Create(entity);
+            await _repositoryManager.SaveAsync();
+
+            return entity;
         }
 
-        public async Task<RoutesDto> GetRouteById(int id)
+        public async Task<bool> Delete(int id)
         {
-            var route = await _repositoryManager.RoutesRepository.GetById(id, false);
-            return _mapper.Map<RoutesDto>(route);
-        }
+            var entity = await _repositoryManager.RoutesRepository.GetById(id, trackChanges: false);
 
-        public async Task CreateRoute(RoutesForCreationDto routeForCreation)
-        {
-            var route = _mapper.Map<Routes>(routeForCreation);
-            await _repositoryManager.RoutesRepository.Create(route);
-        }
-
-        public async Task UpdateRoute(int id, RoutesForUpdateDto routeForUpdate)
-        {
-            var route = await _repositoryManager.RoutesRepository.GetById(id, true);
-            if (route == null)
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            _mapper.Map(routeForUpdate, route);
-            await _repositoryManager.RoutesRepository.Update(route);
+
+            _repositoryManager.RoutesRepository.Delete(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
 
-        public async Task DeleteRoute(int id)
+        public async Task<IEnumerable<Routes>> Get(int rowsCount, string cacheKey) =>
+            await _repositoryManager.RoutesRepository.Get(rowsCount, cacheKey);
+
+        public async Task<IEnumerable<Routes>> GetAll() =>
+            await _repositoryManager.RoutesRepository.GetAll(false);
+
+        public async Task<Routes> GetById(int id) =>
+            await _repositoryManager.RoutesRepository.GetById(id, false);
+
+        public async Task<bool> Update(RoutesForUpdateDto entityForUpdate)
         {
-            var route = await _repositoryManager.RoutesRepository.GetById(id, false);
-            if (route == null)
+            var entity = await _repositoryManager.RoutesRepository.GetById(entityForUpdate.RouteID, trackChanges: true);
+
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            await _repositoryManager.RoutesRepository.Delete(route);
+
+            _mapper.Map(entityForUpdate, entity);
+
+            _repositoryManager.RoutesRepository.Update(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
     }
 }

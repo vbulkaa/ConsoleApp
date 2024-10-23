@@ -1,0 +1,59 @@
+﻿@model IEnumerable<dynamic>
+
+<h1>Список рейсов</h1>
+
+<form method="get">
+    <div>
+        <label for="flightNumber">Номер рейса:</label>
+        <input type="text" id="flightNumber" name="flightNumber" value="@ViewData["CurrentFlightNumber"]" />
+    </div>
+    <div>
+        <label for="departureDate">Дата вылета:</label>
+        <input type="date" id="departureDate" name="departureDate" value="@ViewData["CurrentDepartureDate"]" />
+    </div>
+    <div>
+        <button type="submit">Фильтровать</button>
+    </div>
+</form>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Route" asp-action="Create" class="btn btn-primary">Создать новый маршрут</a>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Номер маршрута</th>
+            <th>Номер рейса</th>
+            <th>Время вылета</th>
+            <th>Дата</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in Model)
+        {
+            foreach (var route in flight.Routes)
+            {
+                <tr>
+                    <td>@route.RouteID</td>
+                    <td>@flight.FlightNumber</td>
+                    <td>@route.DepartureTime</td>
+                    <td>@route.Date.ToShortDateString()</td>
+                    <td>
+                        <a href="@Url.Action("RouteDetails", "Route", new { routeID = route.RouteID })">Подробнее</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <span>|</span>
+                            <a href="@Url.Action("Edit", "Route", new { routeID = route.RouteID })">Редактировать</a>
+                            <span>|</span>
+                            <a href="@Url.Action("Delete", "Route", new { routeID = route.RouteID })" onclick="return confirm('Вы уверены, что хотите удалить этот маршрут?');">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

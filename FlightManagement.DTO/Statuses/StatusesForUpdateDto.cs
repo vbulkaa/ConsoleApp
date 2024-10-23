@@ -8,6 +8,8 @@ namespace FlightManagement.DTO.Statuses
 {
     public class StatusesForUpdateDto
     {
+        public int StatusID { get; set; }
+
         public string StatusName { get; set; }
     }
 }

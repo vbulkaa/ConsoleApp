@@ -10,9 +10,10 @@ namespace FlightManagement.DAL.Interfaces.Repositories
     public interface IAirportsRepository
     {
         Task<IEnumerable<Airports>> GetAll(bool trackChanges);
+        Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey);
         Task<Airports> GetById(int id, bool trackChanges);
         Task Create(Airports entity);
-        Task Create(IEnumerable<Airports> entities);
+        //Task Create(IEnumerable<Airports> entities);
         Task Delete(Airports entity);
         Task Update(Airports entity);
     }

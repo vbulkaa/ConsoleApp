@@ -1,0 +1,75 @@
+﻿@model FlightManagement.DTO.Rotes.RoutesForCreationDto
+<h1>Создать маршрут</h1>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label for="FlightID">Номер рейса:</label>
+        <select id="FlightID" asp-for="FlightID" asp-items="@(new SelectList(ViewBag.Flights, "FlightID", "FlightNumber"))"></select>
+    </div>
+    <div>
+        <label for="DepartureTime">Время вылета:</label>
+        <input type="time" asp-for="DepartureTime" />
+    </div>
+    <div>
+        <label for="Date">Дата:</label>
+        <input type="date" asp-for="Date" />
+    </div>
+
+    <h2>Промежуточные аэропорты</h2>
+    <div id="stops">
+        <div class="stop" id="stop-0">
+            <label>Аэропорт:</label>
+            <select name="Stops[0].AirportID" class="airport-select">
+                @foreach (var airport in ViewBag.Airports)
+                {
+                    <option value="@airport.AirportID">@airport.Name</option>
+                }
+            </select>
+            <label>Время прибытия:</label>
+            <input type="time" name="Stops[0].ArrivalTime" />
+            <label>Время вылета:</label>
+            <input type="time" name="Stops[0].DepartureTime" />
+            <label>Статус:</label>
+            <select name="Stops[0].StatusID" class="status-select">
+                @foreach (var status in ViewBag.Statuses)
+                {
+                    <option value="@status.StatusID">@status.StatusName</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <button type="button" onclick="addStop()">Добавить промежуточный аэропорт</button>
+    <button type="submit">Сохранить маршрут</button>
+</form>
+
+<script>
+    let stopCount = 1;
+
+    function addStop() {
+        const stopsDiv = document.getElementById('stops');
+        const newStop = `
+                <div class="stop" id="stop-${stopCount}">
+                    <label>Аэропорт:</label>
+                    <select name="Stops[${stopCount}].AirportID" class="airport-select">
+    @foreach (var airport in ViewBag.Airports)
+    {
+                                <option value="@airport.AirportID">@airport.Name</option>
+    }
+                    </select>
+                    <label>Время прибытия:</label>
+                    <input type="time" name="Stops[${stopCount}].ArrivalTime" />
+                    <label>Время вылета:</label>
+                    <input type="time" name="Stops[${stopCount}].DepartureTime" />
+                    <label>Статус:</label>
+                    <select name="Stops[${stopCount}].StatusID" class="status-select">
+    @foreach (var status in ViewBag.Statuses)
+    {
+                                <option value="@status.StatusID">@status.StatusName</option>
+    }
+                    </select>
+                </div>`;
+        stopsDiv.insertAdjacentHTML('beforeend', newStop);
+        stopCount++;
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿@model FlightManagement.DTO.Airport.AirportsForCreationDto
+
+<h1>Добавить аэропорт</h1>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label>Название:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label>Локация:</label>
+        <input asp-for="Location" />
+        <span asp-validation-for="Location"></span>
+    </div>
+    <button type="submit">Добавить</button>
+</form>
+
+

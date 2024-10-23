@@ -1,4 +1,5 @@
 ﻿using FlightManagement.DAL.Interfaces.Repositories;
+using FlightManagement.DAL.Repositories.Base;
 using FlightManagement.DAL.models.Users;
 using FlightManagement.DAL.models.People;
 using Microsoft.EntityFrameworkCore;
@@ -61,25 +62,7 @@ namespace FlightManagement.DAL.Repositories
             return await _context.Users.OfType<AdminUser>().Cast<User>().ToListAsync();
         }
 
-        Task<int> IRepositoryBase<User>.CreateEntity(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateEntities(IEnumerable<User> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IRepositoryBase<User>.UpdateEntity(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<int> IRepositoryBase<User>.DeleteEntity(User entity)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 
 }

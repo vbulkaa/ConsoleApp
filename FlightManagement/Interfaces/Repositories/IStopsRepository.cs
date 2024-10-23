@@ -10,9 +10,10 @@ namespace FlightManagement.DAL.Interfaces.Repositories
     public interface IStopsRepository
     {
         Task<IEnumerable<Stops>> GetAll(bool trackChanges);
+        Task<IEnumerable<Stops>> Get(int rowsCount, string cacheKey);
         Task<Stops> GetById(int id, bool trackChanges);
         Task Create(Stops entity);
-        Task Create(IEnumerable<Stops> entities);
+        //Task Create(IEnumerable<Stops> entities);
         Task Delete(Stops entity);
         Task Update(Stops entity);
     }

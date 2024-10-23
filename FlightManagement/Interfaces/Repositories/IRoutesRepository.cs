@@ -10,9 +10,11 @@ namespace FlightManagement.DAL.Interfaces.Repositories
     public interface IRoutesRepository
     {
         Task<IEnumerable<Routes>> GetAll(bool trackChanges);
+        IQueryable<Routes> GetAllEntities(bool trackChanges);
+        Task<IEnumerable<Routes>> Get(int rowsCount, string cacheKey);
         Task<Routes> GetById(int id, bool trackChanges);
         Task Create(Routes entity);
-        Task Create(IEnumerable<Routes> entities);
+        //Task Create(IEnumerable<Routes> entities);
         Task Delete(Routes entity);
         Task Update(Routes entity);
     }

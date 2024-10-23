@@ -10,9 +10,10 @@ namespace FlightManagement.DAL.Interfaces.Repositories
     public interface IStatusesRepository
     {
         Task<IEnumerable<Statuses>> GetAll(bool trackChanges);
+        Task<IEnumerable<Statuses>> Get(int rowsCount, string cacheKey);
         Task<Statuses> GetById(int id, bool trackChanges);
         Task Create(Statuses entity);
-        Task Create(IEnumerable<Statuses> entities);
+       // Task Create(IEnumerable<Statuses> entities);
         Task Delete(Statuses entity);
         Task Update(Statuses entity);
     }

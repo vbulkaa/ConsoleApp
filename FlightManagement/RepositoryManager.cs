@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightManagement.DAL
 {
@@ -27,64 +28,21 @@ namespace FlightManagement.DAL
             _memoryCache = memoryCache;
         }
 
-        public IAirportsRepository AirportsRepository
-        {
-            get
-            {
-                if (_airportsRepository == null)
-                {
-                    _airportsRepository = new AirportsRepository(_dbContext, _memoryCache);
-                }
-                return _airportsRepository;
-            }
-        }
+        public IAirportsRepository AirportsRepository =>
+             _airportsRepository ??= new AirportsRepository(_dbContext, _memoryCache);
 
-        public IFlightsRepository FlightsRepository
-        {
-            get
-            {
-                if (_flightsRepository == null)
-                {
-                    _flightsRepository = new FlightsRepository(_dbContext, _memoryCache);
-                }
-                return _flightsRepository;
-            }
-        }
+        public IFlightsRepository FlightsRepository =>
+            _flightsRepository ??= new FlightsRepository(_dbContext, _memoryCache);
 
-        public IRoutesRepository RoutesRepository
-        {
-            get
-            {
-                if (_routesRepository == null)
-                {
-                    _routesRepository = new RoutesRepository(_dbContext);
-                }
-                return _routesRepository;
-            }
-        }
+        public IRoutesRepository RoutesRepository =>
+            _routesRepository ??= new RoutesRepository(_dbContext, _memoryCache);
 
-        public IStatusesRepository StatusesRepository
-        {
-            get
-            {
-                if (_statusesRepository == null)
-                {
-                    _statusesRepository = new StatusesRepository(_dbContext);
-                }
-                return _statusesRepository;
-            }
-        }
+        public IStatusesRepository StatusesRepository =>
+            _statusesRepository ??= new StatusesRepository(_dbContext, _memoryCache);
 
-        public IStopsRepository StopsRepository
-        {
-            get
-            {
-                if (_stopsRepository == null)
-                {
-                    _stopsRepository = new StopsRepository(_dbContext);
-                }
-                return _stopsRepository;
-            }
-        }
+        public IStopsRepository StopsRepository =>
+            _stopsRepository ??= new StopsRepository(_dbContext, _memoryCache);
+
+        public async Task SaveAsync() => await _dbContext.SaveChangesAsync();
     }
 }
