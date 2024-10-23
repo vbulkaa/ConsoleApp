@@ -9,57 +9,98 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlightManagement.DTO.Flights;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FlightManagement.BLL.Services
 {
+
     public class AirportService : IAirportService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+       // private readonly ILogger<AirportService> _logger;
 
         public AirportService(IRepositoryManager repositoryManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
+           
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AirportsDto>> GetAllAirports()
-        {
-            var airports = await _repositoryManager.AirportsRepository.GetAll(false);
-            return _mapper.Map<IEnumerable<AirportsDto>>(airports);
-        }
 
-        public async Task<AirportsDto> GetAirportById(int id)
+        public async Task<Airports> Create(AirportsForCreationDto entityForCreation)
         {
-            var airport = await _repositoryManager.AirportsRepository.GetById(id, false);
-            return _mapper.Map<AirportsDto>(airport);
-        }
-
-        public async Task CreateAirport(AirportsForCreationDto airportForCreation)
-        {
-            var airport = _mapper.Map<Airports>(airportForCreation);
-            await _repositoryManager.AirportsRepository.Create(airport);
-        }
-
-        public async Task UpdateAirport(int id, AirportsForUpdateDto airportForUpdate)
-        {
-            var airport = await _repositoryManager.AirportsRepository.GetById(id, true);
-            if (airport == null)
+            if (entityForCreation == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                throw new ArgumentNullException(nameof(entityForCreation), "Данные для создания аэропорта не могут быть null.");
             }
-            _mapper.Map(airportForUpdate, airport);
-            await _repositoryManager.AirportsRepository.Update(airport);
+
+            // Маппинг
+            var entity = _mapper.Map<Airports>(entityForCreation);
+
+            // Обработка создания в репозитории
+            try
+            {
+                //_logger.LogInformation("Создание аэропорта: {@Airport}", entity);
+                await _repositoryManager.AirportsRepository.Create(entity);
+                await _repositoryManager.SaveAsync();
+            }
+            catch (DbUpdateException ex) // или другой тип исключения
+            {
+                // Логирование ошибки
+                //_logger.LogError(ex, "Ошибка при добавлении аэропорта: {AirportName}", entityForCreation.Name);
+                throw new Exception("Не удалось создать аэропорт. Пожалуйста, проверьте данные и попробуйте снова.");
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "Произошла ошибка при создании аэропорта");
+                throw; // Перекиньте исключение дальше
+            }
+
+            return entity;
         }
 
-        public async Task DeleteAirport(int id)
+        public async Task<bool> Delete(int id)
         {
-            var airport = await _repositoryManager.AirportsRepository.GetById(id, false);
-            if (airport == null)
+            var entity = await _repositoryManager.AirportsRepository.GetById(id, trackChanges: false);
+
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            await _repositoryManager.AirportsRepository.Delete(airport);
+
+            _repositoryManager.AirportsRepository.Delete(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
+        }
+
+        public async Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey) =>
+            await _repositoryManager.AirportsRepository.Get(rowsCount, cacheKey);
+
+        public async Task<IEnumerable<Airports>> GetAll() =>
+            await _repositoryManager.AirportsRepository.GetAll(false);
+
+        public async Task<Airports> GetById(int id) =>
+            await _repositoryManager.AirportsRepository.GetById(id, false);
+
+        public async Task<bool> Update(AirportsForUpdateDto entityForUpdate)
+        {
+            var entity = await _repositoryManager.AirportsRepository.GetById(entityForUpdate.AirportID, trackChanges: true);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _mapper.Map(entityForUpdate, entity);
+
+            _repositoryManager.AirportsRepository.Update(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
     }
 }

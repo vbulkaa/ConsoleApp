@@ -10,6 +10,7 @@ namespace FlightManagement.DAL.Interfaces
     public interface IRepositoryManager
     {
         IAirportsRepository AirportsRepository { get; }
+        Task SaveAsync();
         IFlightsRepository FlightsRepository { get; }
         IRoutesRepository RoutesRepository { get; }
         IStatusesRepository StatusesRepository { get; }

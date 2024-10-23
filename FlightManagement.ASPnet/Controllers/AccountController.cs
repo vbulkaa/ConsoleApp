@@ -83,10 +83,10 @@ namespace FlightManagement.ASPnet.Controllers
                     Surname = model.Surname,
                     Name = model.Name,
                     MiddleName = model.MiddleName,
-                    IsAdmin = false // регристрирующийся пользователь по умолчанию становится обычным
+                    IsAdmin = true // регристрирующийся пользователь по умолчанию становится обычным
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (result.Succeeded && user.IsAdmin == false)
                 {
                     // установка куки
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -98,7 +98,9 @@ namespace FlightManagement.ASPnet.Controllers
                 {
                     if (user.IsAdmin)
                     {
-                        await _userManager.AddToRoleAsync(user, "Admin"); // Назначение роли
+                        // Назначение роли Admin
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                        return RedirectToAction("Index", "Home");
                     }
                     return RedirectToAction("Index", "Home");
                 }

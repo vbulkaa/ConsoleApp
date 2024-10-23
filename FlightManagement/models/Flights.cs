@@ -21,7 +21,7 @@ namespace FlightManagement.models
         public string AircraftType { get; set; }
         [Range(0, double.MaxValue, ErrorMessage = "Цена должна быть положительной")]
         public decimal TicketPrice { get; set; }
-        public virtual ICollection<Routes> Routes { get; set; } = new List<Routes>(); // Без атрибута [Required]
+        public virtual ICollection<Routes> Routes { get; set; } = new List<Routes>(); 
 
 
         [NotMapped]

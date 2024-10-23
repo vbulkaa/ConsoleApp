@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 // Добавление логирования
+builder.Logging.ClearProviders();  // Удаляет провайдеры логирования по умолчанию
 builder.Logging.AddConsole();
 
 // Регистрация сервиса с использованием Scoped lifetime
@@ -37,11 +38,14 @@ var mappingConfig = new MapperConfiguration(mc =>
 IMapper autoMapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(autoMapper);
 
+
+
 // Настройка кеширования и сессий
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(); //поддержку сессий, что позволяет хранить состояние пользователя между запросами
 
 builder.Services.AddRazorPages();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -49,6 +53,13 @@ builder.Services.AddIdentity<User, IdentityRole>()
         .AddDefaultTokenProviders();
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleInitializer.InitializeAsync(roleManager);
+}
 
 /*builder.Services.ConfigureApplicationCookie(options =>
 {

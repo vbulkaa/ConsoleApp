@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightManagement.DTO.Flights;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace FlightManagement.DTO.Rotes
         public int FlightID { get; set; }
         public TimeSpan DepartureTime { get; set; }
         public DateTime Date { get; set; }
+
+        public FlightsDto Flight { get; set; }
     }
 }

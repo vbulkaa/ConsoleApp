@@ -1,4 +1,6 @@
-﻿using FlightManagement.DTO.Statuses;
+﻿using FlightManagement.DTO.Rotes;
+using FlightManagement.DTO.Statuses;
+using FlightManagement.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,11 @@ namespace FlightManagement.BLL.Interfaces.Services
 {
     public interface IStatusService
     {
-        Task<IEnumerable<StatusesDto>> GetAllStatuses();
-        Task<StatusesDto> GetStatusById(int id);
-        Task CreateStatus(StatusesForCreationDto statusForCreation);
-        Task UpdateStatus(int id, StatusesForUpdateDto statusForUpdate);
-        Task DeleteStatus(int id);
+        Task<IEnumerable<Statuses>> GetAll();
+        Task<IEnumerable<Statuses>> Get(int rowsCount, string cacheKey);
+        Task<Statuses> GetById(int id);
+        Task<Statuses> Create(StatusesForCreationDto statusForCreation);
+        Task<bool> Update(StatusesForUpdateDto statusForUpdate);
+        Task<bool> Delete(int id);
     }
 }

@@ -19,6 +19,7 @@ namespace FlightManagement.ASPnet.Extensions
         {
             services.AddMemoryCache();
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddScoped<RepositoryManager>();
 
             // Добавление сервисов для управления рейсами, аэропортами и т.д.
             services.AddScoped<IAirportService, AirportService>();

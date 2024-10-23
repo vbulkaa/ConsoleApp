@@ -22,59 +22,55 @@ namespace FlightManagement.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<FlightsDto>> GetAllFlights()
+        public async Task<Flights> Create(FlightsForCreationDto entityForCreation)
         {
-            var flights = await _repositoryManager.FlightsRepository.GetAll(false);
-            return _mapper.Map<IEnumerable<FlightsDto>>(flights);
+            var entity = _mapper.Map<Flights>(entityForCreation);
+
+            await _repositoryManager.FlightsRepository.Create(entity);
+            await _repositoryManager.SaveAsync();
+
+            return entity;
         }
 
-        public async Task<FlightsDto> GetFlightById(int id)
+        public async Task<bool> Delete(int id)
         {
-            var flight = await _repositoryManager.FlightsRepository.GetById(id, false);
-            return _mapper.Map<FlightsDto>(flight);
-        }
+            var entity = await _repositoryManager.FlightsRepository.GetById(id, trackChanges: false);
 
-        public async Task CreateFlight(FlightsForCreationDto flightForCreation)
-        {
-            var flight = _mapper.Map<Flights>(flightForCreation);
-            await _repositoryManager.FlightsRepository.Create(flight);
-        }
-
-        public async Task UpdateFlight(int id, FlightsForUpdateDto flightForUpdate)
-        {
-            var flight = await _repositoryManager.FlightsRepository.GetById(id, true);
-            if (flight == null)
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            _mapper.Map(flightForUpdate, flight);
-            await _repositoryManager.FlightsRepository.Update(flight);
+
+            _repositoryManager.FlightsRepository.Delete(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
 
-        public async Task DeleteFlight(int id)
+        public async Task<IEnumerable<Flights>> Get(int rowsCount, string cacheKey) =>
+            await _repositoryManager.FlightsRepository.Get(rowsCount, cacheKey);
+
+        public async Task<IEnumerable<Flights>> GetAll() =>
+            await _repositoryManager.FlightsRepository.GetAll(false);
+
+        public async Task<Flights> GetById(int id) =>
+            await _repositoryManager.FlightsRepository.GetById(id, false);
+
+        public async Task<bool> Update(FlightsForUpdateDto entityForUpdate)
         {
-            var flight = await _repositoryManager.FlightsRepository.GetById(id, false);
-            if (flight == null)
+            var entity = await _repositoryManager.FlightsRepository.GetById(entityForUpdate.FlightID, trackChanges: true);
+
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            await _repositoryManager.FlightsRepository.Delete(flight);
-        }
 
-        public async Task Create(IEnumerable<Flights> entityForCreation) =>
-            await _repositoryManager.FlightsRepository.Create(entityForCreation);
+            _mapper.Map(entityForUpdate, entity);
 
-        public async Task<IEnumerable<FlightsDto>> Get(int rowsCount, string cacheKey)
-        {
-            var flights = await _repositoryManager.FlightsRepository.Get(rowsCount, cacheKey);
-            return _mapper.Map<IEnumerable<FlightsDto>>(flights);
+            _repositoryManager.FlightsRepository.Update(entity);
+            await _repositoryManager.SaveAsync();
 
-        }
-
-        public async Task Create(IEnumerable<FlightsDto> flightsForCreation)
-        {
-            var flights = _mapper.Map<IEnumerable<Flights>>(flightsForCreation);
-            await _repositoryManager.FlightsRepository.Create(flights);
+            return true;
         }
     }
 }

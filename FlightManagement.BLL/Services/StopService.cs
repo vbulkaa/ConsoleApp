@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlightManagement.BLL.Interfaces.Services;
 using FlightManagement.DAL.Interfaces;
+using FlightManagement.DTO.Statuses;
 using FlightManagement.DTO.Stops;
 using FlightManagement.models;
 using System;
@@ -22,43 +23,55 @@ namespace FlightManagement.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<StopsDto>> GetAllStops()
+        public async Task<Stops> Create(StopsForCreationDto entityForCreation)
         {
-            var stops = await _repositoryManager.StopsRepository.GetAll(false);
-            return _mapper.Map<IEnumerable<StopsDto>>(stops);
+            var entity = _mapper.Map<Stops>(entityForCreation);
+
+            await _repositoryManager.StopsRepository.Create(entity);
+            await _repositoryManager.SaveAsync();
+
+            return entity;
         }
 
-        public async Task<StopsDto> GetStopById(int id)
+        public async Task<bool> Delete(int id)
         {
-            var stop = await _repositoryManager.StopsRepository.GetById(id, false);
-            return _mapper.Map<StopsDto>(stop);
-        }
+            var entity = await _repositoryManager.StopsRepository.GetById(id, trackChanges: false);
 
-        public async Task CreateStop(StopsForCreationDto stopForCreation)
-        {
-            var stop = _mapper.Map<Stops>(stopForCreation);
-            await _repositoryManager.StopsRepository.Create(stop);
-        }
-
-        public async Task UpdateStop(int id, StopsForUpdateDto stopForUpdate)
-        {
-            var stop = await _repositoryManager.StopsRepository.GetById(id, true);
-            if (stop == null)
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            _mapper.Map(stopForUpdate, stop);
-            await _repositoryManager.StopsRepository.Update(stop);
+
+            _repositoryManager.StopsRepository.Delete(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
 
-        public async Task DeleteStop(int id)
+        public async Task<IEnumerable<Stops>> Get(int rowsCount, string cacheKey) =>
+            await _repositoryManager.StopsRepository.Get(rowsCount, cacheKey);
+
+        public async Task<IEnumerable<Stops>> GetAll() =>
+            await _repositoryManager.StopsRepository.GetAll(false);
+
+        public async Task<Stops> GetById(int id) =>
+            await _repositoryManager.StopsRepository.GetById(id, false);
+
+        public async Task<bool> Update(StopsForUpdateDto entityForUpdate)
         {
-            var stop = await _repositoryManager.StopsRepository.GetById(id, false);
-            if (stop == null)
+            var entity = await _repositoryManager.StopsRepository.GetById(entityForUpdate.StopID, trackChanges: true);
+
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            await _repositoryManager.StopsRepository.Delete(stop);
+
+            _mapper.Map(entityForUpdate, entity);
+
+            _repositoryManager.StopsRepository.Update(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using FlightManagement.DTO.Flights;
+﻿using FlightManagement.DTO.Airport;
+using FlightManagement.DTO.Flights;
+using FlightManagement.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +11,11 @@ namespace FlightManagement.BLL.Interfaces.Services
 {
     public interface IFlightService
     {
-        Task<IEnumerable<FlightsDto>> GetAllFlights();
-        Task<IEnumerable<FlightsDto>> Get(int rowsCount, string cacheKey);
-        Task<FlightsDto> GetFlightById(int id);
-        Task CreateFlight(FlightsForCreationDto flightForCreation);
-        Task Create(IEnumerable<FlightsDto> flights);
-        Task UpdateFlight(int id, FlightsForUpdateDto flightForUpdate);
-        Task DeleteFlight(int id);
+        Task<IEnumerable<Flights>> GetAll();
+        Task<IEnumerable<Flights>> Get(int rowsCount, string cacheKey);
+        Task<Flights> GetById(int id);
+        Task<Flights> Create(FlightsForCreationDto flightForCreationDto);
+        Task<bool> Update(FlightsForUpdateDto flightForUpdateDto);
+        Task<bool> Delete(int id);
     }
 }

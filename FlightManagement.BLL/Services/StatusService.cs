@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlightManagement.BLL.Interfaces.Services;
 using FlightManagement.DAL.Interfaces;
+using FlightManagement.DTO.Rotes;
 using FlightManagement.DTO.Statuses;
 using FlightManagement.models;
 using System;
@@ -22,43 +23,55 @@ namespace FlightManagement.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<StatusesDto>> GetAllStatuses()
+        public async Task<Statuses> Create(StatusesForCreationDto entityForCreation)
         {
-            var statuses = await _repositoryManager.StatusesRepository.GetAll(false);
-            return _mapper.Map<IEnumerable<StatusesDto>>(statuses);
+            var entity = _mapper.Map<Statuses>(entityForCreation);
+
+            await _repositoryManager.StatusesRepository.Create(entity);
+            await _repositoryManager.SaveAsync();
+
+            return entity;
         }
 
-        public async Task<StatusesDto> GetStatusById(int id)
+        public async Task<bool> Delete(int id)
         {
-            var status = await _repositoryManager.StatusesRepository.GetById(id, false);
-            return _mapper.Map<StatusesDto>(status);
-        }
+            var entity = await _repositoryManager.StatusesRepository.GetById(id, trackChanges: false);
 
-        public async Task CreateStatus(StatusesForCreationDto statusForCreation)
-        {
-            var status = _mapper.Map<Statuses>(statusForCreation);
-            await _repositoryManager.StatusesRepository.Create(status);
-        }
-
-        public async Task UpdateStatus(int id, StatusesForUpdateDto statusForUpdate)
-        {
-            var status = await _repositoryManager.StatusesRepository.GetById(id, true);
-            if (status == null)
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            _mapper.Map(statusForUpdate, status);
-            await _repositoryManager.StatusesRepository.Update(status);
+
+            _repositoryManager.StatusesRepository.Delete(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
 
-        public async Task DeleteStatus(int id)
+        public async Task<IEnumerable<Statuses>> Get(int rowsCount, string cacheKey) =>
+            await _repositoryManager.StatusesRepository.Get(rowsCount, cacheKey);
+
+        public async Task<IEnumerable<Statuses>> GetAll() =>
+            await _repositoryManager.StatusesRepository.GetAll(false);
+
+        public async Task<Statuses> GetById(int id) =>
+            await _repositoryManager.StatusesRepository.GetById(id, false);
+
+        public async Task<bool> Update(StatusesForUpdateDto entityForUpdate)
         {
-            var status = await _repositoryManager.StatusesRepository.GetById(id, false);
-            if (status == null)
+            var entity = await _repositoryManager.StatusesRepository.GetById(entityForUpdate.StatusID, trackChanges: true);
+
+            if (entity == null)
             {
-                throw new Exception($"Entity with id {id} doesn't exist in database!");
+                return false;
             }
-            await _repositoryManager.StatusesRepository.Delete(status);
+
+            _mapper.Map(entityForUpdate, entity);
+
+            _repositoryManager.StatusesRepository.Update(entity);
+            await _repositoryManager.SaveAsync();
+
+            return true;
         }
     }
 }
