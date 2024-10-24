@@ -1,1 +1,11 @@
-﻿
+﻿@model FlightManagement.models.Flights;
+
+<h1>Удалить рейс</h1>
+
+<p>Вы уверены, что хотите удалить рейс @Model.FlightNumber?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="FlightID" />
+    <button type="submit">Удалить</button>
+    <a asp-action="Index">Отмена</a>
+</form>

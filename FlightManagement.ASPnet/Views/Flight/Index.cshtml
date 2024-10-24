@@ -1,33 +1,63 @@
-﻿@model IEnumerable<FlightManagement.models.Flights>
+﻿@model IEnumerable<FlightManagement.ASPnet.Models.FlightSchedule>
 
 @{
-    ViewData["Title"] = "Список рейсов";
+    ViewData["Title"] = "Расписание рейсов";
 }
 
-<h1>Список рейсов</h1>
-<table class="table">
+<h1>@ViewData["Title"]</h1>
+
+<form method="get">
+    <div>
+        <label for="airportName">Название аэропорта:</label>
+        <input type="text" id="airportName" name="airportName" value="@Context.Request.Query["airportName"]" />
+    </div>
+    <div>
+        <label for="routeID">Идентификатор маршрута:</label>
+        <input type="text" id="routeID" name="routeID" value="@Context.Request.Query["routeID"]" />
+    </div>
+    <div>
+        <label for="departureTime">Время вылета:</label>
+        <input type="time" id="departureTime" name="departureTime" value="@Context.Request.Query["departureTime"]" />
+    </div>
+    <button type="submit">Фильтровать</button>
+</form>
+
+<table>
     <thead>
         <tr>
+            <th>Идентификатор маршрута</th>
             <th>Номер рейса</th>
             <th>Тип самолета</th>
-            <th>Цена билета</th>
-            <th>Действия</th>
+            <th>Цена</th>
+            <th>Название аэропорта вылета</th>
+            <th>Локация аэропорта вылета</th>
+            <th>Время вылета</th>
+            <th>Дата</th>
+            <th>Статус вылета</th>
+            <th>Время прилета</th>
+            <th>Название аэропорта прибытия</th>
+            <th>Локация аэропорта прибытия</th>
+            <th>Статус прилета</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var flight in Model)
         {
             <tr>
+                <td>@flight.RouteID</td>
                 <td>@flight.FlightNumber</td>
                 <td>@flight.AircraftType</td>
                 <td>@flight.TicketPrice</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@flight.FlightID">Редактировать</a> |
-                    <a asp-action="Delete" asp-route-id="@flight.FlightID">Удалить</a> |
-                    <a asp-action="ManageRoutes" asp-route-flightId="@flight.FlightID">Управление маршрутами</a>
-                </td>
+                <td>@flight.DepartureAirportName</td>
+                <td>@flight.DepartureAirportLocation</td>
+                <td>@flight.DepartureTime</td>
+                <td>@flight.Date.ToShortDateString()</td>
+                <td>@flight.DepartureStatusName</td>
+                <td>@flight.ArrivalTime</td>
+                <td>@flight.ArrivalAirportName</td>
+                <td>@flight.ArrivalAirportLocation</td>
+                <td>@flight.ArrivalStatusName</td>
             </tr>
         }
     </tbody>
 </table>
-<a asp-action="Create" class="btn btn-primary">Добавить новый рейс</a>

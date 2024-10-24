@@ -17,17 +17,22 @@ namespace FlightManagement.DAL.Repositories
         private readonly AppDbContext _dbContext;       
 
 public AirportsRepository(AppDbContext dbcontext, IMemoryCache memoryCache) 
-            : base(dbcontext, memoryCache) {
+            : base(dbcontext, memoryCache) 
+        {
             _dbContext = dbContext;
         }
 
+        /*public IQueryable<Airports> GetAllEntities(bool trackChanges)
+        {
+            return !trackChanges ? dbContext.Airports.AsNoTracking() : dbContext.Airports;
+        }*/
 
-        //public IQueryable<Airports> GetAllEntities(bool trackChanges)
-        //{
-        //    return !trackChanges ?
-        //        _dbContext.Airports.AsNoTracking() :
-        //        _dbContext.Airports;
-        //}
+        public IQueryable<Airports> GetAllEntities(bool trackChanges)
+        {
+            return !trackChanges ?
+                _dbContext.Airports.AsNoTracking() :
+                _dbContext.Airports;
+        }
 
         public async Task Create(Airports entity)
         {

@@ -14,6 +14,8 @@ namespace FlightManagement.DTO.Rotes
         public TimeSpan DepartureTime { get; set; }
         public DateTime Date { get; set; }
 
-        public FlightsDto Flight { get; set; }
+        public FlightsDto Flights { get; set; }
+       
+        public object AirportID { get; set; }
     }
 }

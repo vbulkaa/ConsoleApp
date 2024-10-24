@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 namespace FlightManagement.DAL.Configuration
 {
@@ -20,6 +21,8 @@ namespace FlightManagement.DAL.Configuration
             builder.HasOne(r => r.Flight)
                 .WithMany(f => f.Routes) // Настройка отношения
                 .HasForeignKey(r => r.FlightID);
+
+           
         }
     }
 }

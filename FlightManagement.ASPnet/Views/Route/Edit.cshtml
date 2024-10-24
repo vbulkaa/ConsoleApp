@@ -1,115 +1,86 @@
-﻿@using Microsoft.AspNetCore.Html
-@using FlightManagement.DTO.Rotes
-@using FlightManagement.DTO.Stops
+﻿   
 @model FlightManagement.DTO.Rotes.RoutesForUpdateDto
 
-
-
-<h1>Изменить маршрут</h1>
+<h2>Редактировать маршрут</h2>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="RouteID" />
+    <div>
+        <label asp-for="FlightID">Рейс</label>
+        <select asp-for="FlightID" asp-items="@(new SelectList(ViewBag.Flights, "FlightID", "FlightNumber"))"></select>
+    </div>
+    <div>
+        <label asp-for="DepartureTime">Время отправления</label>
+        <input asp-for="DepartureTime" type="time" />
+    </div>
+    <div>
+        <label asp-for="Date">Дата</label>
+        <input asp-for="Date" type="date" />
+    </div>
 
-    <div>
-        <label for="FlightID">Номер рейса:</label>
-        <select id="FlightID" asp-for="FlightID" asp-items="@(new SelectList(ViewBag.Flights, "FlightID", "FlightNumber", Model.FlightID))"></select>
-    </div>
-    <div>
-        <label for="DepartureTime">Время вылета:</label>
-        <input type="time" asp-for="DepartureTime" />
-    </div>
-    <div>
-        <label for="Date">Дата:</label>
-        <input type="date" asp-for="Date" />
-    </div>
-
-    <h2>Промежуточные аэропорты</h2>
-    <div id="stops">
+    <h3>Остановки</h3>
+    <div id="stopsContainer">
         @for (int i = 0; i < Model.Stops.Count; i++)
         {
-            @RenderStopSection(Model.Stops[i], i)
+            <div class="stopEntry" data-index="@i">
+                <h4>Остановка @i</h4>
+                <input type="hidden" asp-for="Stops[i].StopID" />
+                <label asp-for="Stops[i].AirportID">Аэропорт</label>
+                <select asp-for="Stops[i].AirportID" asp-items="@(new SelectList(ViewBag.Airports, "AirportID", "Name"))"></select>
+                <label asp-for="Stops[i].ArrivalTime">Время прибытия</label>
+                <input asp-for="Stops[i].ArrivalTime" type="time" />
+                <label asp-for="Stops[i].DepartureTime">Время отправления</label>
+                <input asp-for="Stops[i].DepartureTime" type="time" />
+                <label asp-for="Stops[i].StatusID">Статус</label>
+                <select asp-for="Stops[i].StatusID" asp-items="@(new SelectList(ViewBag.Statuses, "StatusID", "StatusName"))"></select>
+                <button type="button" class="removeStop">Удалить остановку</button>
+            </div>
         }
     </div>
-
-    <button type="button" onclick="addStop()">Добавить промежуточный аэропорт</button>
-    <button type="submit">Сохранить изменения</button>
+    <button type="button" id="addStop">Добавить остановку</button>
+    <button type="submit">Сохранить</button>
 </form>
 
-@functions {
-    private IHtmlContent RenderStopSection(StopsForUpdateDto stop, int index)
-    {
-        var stopSection = $@"
-            <div class='stop' id='stop-{index}'>
-                <input type='hidden' name='Stops[{index}].StopID' value='{stop.StopID}' />
-                <input type='hidden' name='Stops[{index}].RouteID' value='{stop.RouteID}' />
-                <label>Аэропорт:</label>
-                <select name='Stops[{index}].AirportID' class='airport-select'>
-                {GetAirportOptions(stop.AirportID)}
-                </select>
-                <label>Время прибытия:</label>
-                <input type='time' name='Stops[{index}].ArrivalTime' value='{stop.ArrivalTime}' />
-                <label>Время вылета:</label>
-                <input type='time' name='Stops[{index}].DepartureTime' value='{stop.DepartureTime}' />
-                <label>Статус:</label>
-                <select name='Stops[{index}].StatusID' class='status-select'>
-                {GetStatusOptions(stop.StatusID)}
-                </select>
-            </div>";
 
-        return new HtmlString(stopSection);
-    }
+@section Scripts {
+    <script>
+        document.getElementById('addStop').addEventListener('click', function () {
+            const container = document.getElementById('stopsContainer');
+            const index = container.children.length;
 
-    private string GetAirportOptions(int selectedAirportId)
-    {
-        var options = new System.Text.StringBuilder();
-        foreach (var airport in ViewBag.Airports)
-        {
-            var selected = airport.AirportID == selectedAirportId ? "selected" : "";
-            options.Append($"<option value='{airport.AirportID}' {selected}>{airport.Name}</option>");
-        }
-        return options.ToString();
-    }
-
-    private string GetStatusOptions(int selectedStatusId)
-    {
-        var options = new System.Text.StringBuilder();
-        foreach (var status in ViewBag.Statuses)
-        {
-            var selected = status.StatusID == selectedStatusId ? "selected" : "";
-            options.Append($"<option value='{status.StatusID}' {selected}>{status.StatusName}</option>");
-        }
-        return options.ToString();
-    }
-}
-
-<script>
-    let stopCount = @Model.Stops.Count;
-
-    function addStop() {
-        const stopsDiv = document.getElementById('stops');
-        const newStop = `
-                <div class="stop" id="stop-${stopCount}">
-                    <input type="hidden" name="Stops[${stopCount}].RouteID" value="@Model.RouteID" />
-                    <label>Аэропорт:</label>
-                    <select name="Stops[${stopCount}].AirportID" class="airport-select">
+            const newStop = `
+                <div class="stopEntry" data-index="${index}">
+                    <h4>Остановка ${index}</h4>
+                    <input type="hidden" name="Stops[${index}].StopID" value="0" />
+                    <label for="Stops_${index}__AirportID">Аэропорт</label>
+                    <select name="Stops[${index}].AirportID" required>
                         @foreach (var airport in ViewBag.Airports)
-    {
-                                <option value="@airport.AirportID">@airport.Name</option>
-    }
+                        {
+                            <option value="@airport.AirportID">@airport.Name</option>
+                        }
                     </select>
-                    <label>Время прибытия:</label>
-                    <input type="time" name="Stops[${stopCount}].ArrivalTime" />
-                    <label>Время вылета:</label>
-                    <input type="time" name="Stops[${stopCount}].DepartureTime" />
-                    <label>Статус:</label>
-                    <select name="Stops[${stopCount}].StatusID" class="status-select">
-    @foreach (var status in ViewBag.Statuses)
-    {
-                                <option value="@status.StatusID">@status.StatusName</option>
-    }
+                    <label for="Stops_${index}__ArrivalTime">Время прибытия</label>
+                    <input type="time" name="Stops[${index}].ArrivalTime" required />
+                    <label for="Stops_${index}__DepartureTime">Время отправления</label>
+                    <input type="time" name="Stops[${index}].DepartureTime" required />
+                    <label for="Stops_${index}__StatusID">Статус</label>
+                    <select name="Stops[${index}].StatusID" required>
+                        @foreach (var status in ViewBag.Statuses)
+                        {
+                            <option value="@status.StatusID">@status.StatusName</option>
+                        }
                     </select>
-                </div>`;
-        stopsDiv.insertAdjacentHTML('beforeend', newStop);
-        stopCount++;
-    }
-</script>
+                    <button type="button" class="removeStop">Удалить остановку</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', newStop);
+        });
+
+        document.getElementById('stopsContainer').addEventListener('click', function (e) {
+            if (e.target.classList.contains('removeStop')) {
+                const stopEntry = e.target.closest('.stopEntry');
+                stopEntry.remove();
+            }
+        });
+    </script>
+}
