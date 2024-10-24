@@ -35,6 +35,8 @@ namespace FlightManagement.DAL
             modelBuilder.ApplyConfiguration(new RouteConfig());
             modelBuilder.ApplyConfiguration(new StatusConfig());
             modelBuilder.ApplyConfiguration(new StopConfig());
+
+          
         }
     }
 }

@@ -83,7 +83,7 @@ namespace FlightManagement.ASPnet.Controllers
                     Surname = model.Surname,
                     Name = model.Name,
                     MiddleName = model.MiddleName,
-                    IsAdmin = true // регристрирующийся пользователь по умолчанию становится обычным
+                    IsAdmin = false // регристрирующийся пользователь по умолчанию становится обычным
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded && user.IsAdmin == false)

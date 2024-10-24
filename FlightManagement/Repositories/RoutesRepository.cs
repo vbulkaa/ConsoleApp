@@ -16,12 +16,16 @@ namespace FlightManagement.DAL.Repositories
     {
         public RoutesRepository(AppDbContext context, IMemoryCache memoryCache) : base(context, memoryCache) { }
 
+        public async Task<Routes> GetByIdAsync(int id, bool trackChanges)
+        {
+            return await GetByCondition(r => r.RouteID == id, trackChanges).SingleOrDefaultAsync();
+        }
 
-        //    public RoutesRepository(AppDbContext dbContext)
-        //        : base(dbContext)
-        //    {
-        //    }
-
+        public async Task DeleteRangeAsync(IEnumerable<Routes> entities)
+        {
+            dbContext.Set<Routes>().RemoveRange(entities);
+            await Task.CompletedTask; // Или удалите эту строку, если не нужно.
+        }
         public async Task Create(Routes entity) =>
             await CreateEntity(entity);
 

@@ -22,8 +22,12 @@ namespace FlightManagement.DAL.Repositories
         public async Task Create(Stops entity) =>
             await CreateEntity(entity);
 
-        public async Task Delete(Stops entity) =>
-            await Delete(entity);
+        public async Task Delete(Stops entity)
+        {
+
+            DeleteEntity(entity);
+            // await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<Stops>> GetAll(bool trackChanges) =>
             await GetAllEntities(trackChanges).ToListAsync();
@@ -46,6 +50,11 @@ namespace FlightManagement.DAL.Repositories
                 }
             }
             return entities;
+        }
+        public async Task DeleteRangeAsync(IEnumerable<Stops> entities)
+        {
+            dbContext.Set<Stops>().RemoveRange(entities);
+            await Task.CompletedTask; // Или удалите эту строку, если не нужно.
         }
 
 

@@ -9,6 +9,7 @@ namespace FlightManagement.DAL.Interfaces.Repositories
 {
     public interface IAirportsRepository
     {
+        IQueryable<Airports> GetAllEntities(bool trackChanges);
         Task<IEnumerable<Airports>> GetAll(bool trackChanges);
         Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey);
         Task<Airports> GetById(int id, bool trackChanges);

@@ -1,1 +1,22 @@
-﻿
+﻿@model FlightManagement.DTO.Flights.FlightsForUpdateDto;
+
+<h1>Редактировать рейс</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="FlightID" />
+    <div>
+        <label>Номер рейса:</label>
+        <input asp-for="FlightNumber" />
+        <span asp-validation-for="FlightNumber"></span>
+    </div>
+    <div>
+        <label>Тип самолета:</label>
+        <select asp-for="AircraftType" asp-items="ViewBag.AircraftTypes"></select>
+    </div>
+    <div>
+        <label>Цена билета:</label>
+        <input asp-for="TicketPrice" />
+        <span asp-validation-for="TicketPrice"></span>
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
