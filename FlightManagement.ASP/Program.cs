@@ -43,7 +43,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Настройка маршрутов
-app.Map("/Airports", Endpoints.AirportsTable);
+//app.Map("/Table", Endpoints.);
 
 app.MapControllerRoute(
     name: "default",

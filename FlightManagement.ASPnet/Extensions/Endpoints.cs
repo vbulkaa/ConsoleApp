@@ -14,7 +14,7 @@ namespace FlightManagement.ASPnet.Extensions
     public class Endpoints
     {
         // Получает список аэропортов и отображает его в виде HTML-таблицы
-        public static void AirportsTable(IApplicationBuilder app)
+        public static void Table(IApplicationBuilder app)
         {
             app.Run(async context =>
             {

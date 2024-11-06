@@ -7,26 +7,28 @@ namespace FlightManagement.DAL
 {
     public class DbInitializer
     {
-        private readonly AppDbContext _context;
-        private readonly ILogger<DbInitializer> _logger;
-        public static List<Routes> Routes { get; private set; } = new List<Routes>();
-        public static List<Stops> Stops { get; private set; } = new List<Stops>();
+        //private readonly AppDbContext _context;
+        //private readonly ILogger<DbInitializer> _logger;
+        private static readonly Random _random = new Random();
 
-        public DbInitializer(AppDbContext context, ILogger<DbInitializer> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        public static List<Airports> Airports { get; private set; }
+        public static List<Flights> Flights { get; private set; }
+
+        public static List<Routes> Routes { get; private set; } 
+        public static List<Stops> Stops { get; private set; } 
+        public static List<Statuses> Statuss { get; private set; }
+
+        
         public static void Initialize(AppDbContext context, ILogger logger)
         {
             // Убедиться, что база данных создана
             context.Database.EnsureCreated();
 
-            if (context.Airports.Any() || context.Flights.Any() || context.Statuses.Any() || context.Routes.Any() || context.Stops.Any())
+            /*if (context.Airports.Any() || context.Flights.Any() || context.Statuses.Any() || context.Routes.Any() || context.Stops.Any())
             {
                 logger.LogInformation("Database already initialized.");
-                return; // База данных уже инициализирована
-            }
+                return; 
+            }*/
 
             var airportsData = new (string Location, string Airport)[]
             { ("Abakan", "Abakan International Airport"),
@@ -110,7 +112,7 @@ namespace FlightManagement.DAL
                  new Statuses { StatusName = "Промежуточный" },
                  new Statuses { StatusName = "Прилет" }
             };
-
+            
             context.Statuses.AddRange(statuses);
             context.SaveChanges();
 
@@ -134,7 +136,7 @@ namespace FlightManagement.DAL
             };
 
             var random = new Random();
-            for (int i = 1; i <= 500; i++)
+            for (int i = 1; i <= 2000; i++)
             {
                 var flight = new Flights
                 {
@@ -148,6 +150,7 @@ namespace FlightManagement.DAL
             context.Flights.AddRange(flights);
             context.SaveChanges();
             logger.LogInformation($"{flights.Count} flights initialized.");
+            
             var routes = new List<Routes>(); 
             var stops = new List<Stops>();
 
