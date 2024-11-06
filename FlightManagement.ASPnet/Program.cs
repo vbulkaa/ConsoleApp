@@ -84,7 +84,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Настройка маршрутов
-app.Map("/Inicialize", Endpoints.AirportsTable);
+app.Map("/Inicialize", Endpoints.Table);
 
 
 app.UseAuthentication();

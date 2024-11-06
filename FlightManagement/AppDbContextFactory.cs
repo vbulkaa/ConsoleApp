@@ -13,7 +13,7 @@ namespace FlightManagement.DAL
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=DESKTOP-CADBM5B\\MSSQLEXPRESS,49758;Database=FlightManagement;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-CADBM5B\\MSSQLEXPRESS;Database=FlightManagement;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true;");
 
             return new AppDbContext(optionsBuilder.Options);
         }
