@@ -1,9 +1,17 @@
 ﻿   
 @model FlightManagement.DTO.Rotes.RoutesForUpdateDto
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h2>Редактировать маршрут</h2>
 
-<form asp-action="Edit" method="post">
+    <form asp-action="Edit" method="post" class="formsort">
     <input type="hidden" asp-for="RouteID" />
     <div>
         <label asp-for="FlightID">Рейс</label>
@@ -84,3 +92,5 @@
         });
     </script>
 }
+</body>
+</html>

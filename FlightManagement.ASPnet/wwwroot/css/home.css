@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #000;
+}
+
+.image-container {
+  position: relative;
+  width: 1525px; /* Задайте ширину контейнера */
+  height: 660px; /* Задайте высоту контейнера */
+  overflow: hidden;
+}
+
+.image1 {
+  display: block; /* Убирает нижнее пространство */
+  width: 306.62px; 
+  height: 660px; 
+  left: 0px; 
+  top: 0px; 
+  position: absolute;
+}
+
+.image2{
+  width: 306.4px; 
+  height: 660px; 
+  left: 301.4px; 
+  top: 0px; 
+  position: absolute;
+}
+.image3{
+  width: 306.4px;
+  height: 660px; 
+  left: 599.79px; 
+  top: 0px; 
+  position: absolute;
+}
+.image4{
+  width: 314.41px; 
+  height: 660px; 
+  left: 903.19px; 
+  top: 0px; 
+  position: absolute;
+}
+.image5{
+  width: 306.4px;
+  height: 660px; 
+  left: 1217.6px; 
+  top: 0px; 
+  position: absolute;
+}
+.container{
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  padding: 0;
+}
+
+.main-title {
+  position: absolute;
+  width: 1167px; 
+  height: 44px; 
+  color: white; 
+  font-size: 36px; 
+  font-family: Inter; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 3.60px; 
+  word-wrap: break-word;
+  top: 50px;
+  left: 173px;
+  text-shadow: 0px 5px 4px rgba(0, 0, 0, 0.5);
+}
+
+.one-title{
+  position: absolute;
+  width: 270px; 
+  height: 70px;
+  color: white; 
+  font-size: 20px;
+  font-family: Inter;
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+  word-wrap: break-word;
+  top: 270px;
+  left: 319px;
+  text-shadow: 0px 5px 4px rgba(0, 0, 0, 0.5);
+}
+
+.two-title{
+  position: absolute;
+  width: 301px; 
+  color: #FFFCFC; 
+  font-size: 20px; 
+  font-family: Inter; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  word-wrap: break-word;
+  top: 270px;
+  left: 609px;
+  text-shadow: 0px 5px 4px rgba(0, 0, 0, 0.5);
+}
+
+.three-title{
+  position: absolute;
+  width: 243px; 
+  color: #FFFCFC; 
+  font-size: 20px; 
+  font-family: Inter; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  word-wrap: break-word;
+  top: 270px;
+  left: 951px;
+  text-shadow: 0px 5px 4px rgba(0, 0, 0, 0.5);
+}
+
+.sub-title:nth-child(2) {
+  color: #FFFCFC; /* Другой цвет для этого подзаголовка */
+}
+
+@media (max-width: 600px) {
+  .main-title {
+      font-size: 36px;
+      letter-spacing: 3px;
+  }
+
+  .sub-title {
+      font-size: 24px;
+      letter-spacing: 2px;
+  }
+}

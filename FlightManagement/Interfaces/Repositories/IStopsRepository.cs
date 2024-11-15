@@ -16,9 +16,11 @@ namespace FlightManagement.DAL.Interfaces.Repositories
         IQueryable<Stops> GetByCondition(Expression<Func<Stops, bool>> expression, bool trackChanges);
         Task<Stops> GetById(int id, bool trackChanges);
         Task DeleteRangeAsync(IEnumerable<Stops> entities);
+       
         Task Create(Stops entity);
         //Task Create(IEnumerable<Stops> entities);
         Task Delete(Stops entity);
         Task Update(Stops entity);
+        Task DeleteRange(IEnumerable<Stops> entities);
     }
 }

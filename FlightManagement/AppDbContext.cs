@@ -9,6 +9,7 @@ using FlightManagement.DAL.models.Users;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Routing;
 
 namespace FlightManagement.DAL
 {
@@ -29,14 +30,17 @@ namespace FlightManagement.DAL
         //Применение конфигураций
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new AirportConfig());
-            modelBuilder.ApplyConfiguration(new FlightConfig());
-            modelBuilder.ApplyConfiguration(new RouteConfig());
-            modelBuilder.ApplyConfiguration(new StatusConfig());
-            modelBuilder.ApplyConfiguration(new StopConfig());
+             base.OnModelCreating(modelBuilder);
+             modelBuilder.ApplyConfiguration(new AirportConfig());
+             modelBuilder.ApplyConfiguration(new FlightConfig());
+             modelBuilder.ApplyConfiguration(new RouteConfig());
+             modelBuilder.ApplyConfiguration(new StatusConfig());
+             modelBuilder.ApplyConfiguration(new StopConfig());
 
-          
+            modelBuilder.Entity<Routes>()
+            .HasMany(r => r.Stops)
+            .WithOne(s => s.Route)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

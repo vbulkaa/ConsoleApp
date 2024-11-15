@@ -1,4 +1,5 @@
 ﻿using FlightManagement.models;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,6 @@ namespace FlightManagement.DAL.Interfaces.Repositories
         //Task Create(IEnumerable<Routes> entities);
         Task Delete(Routes entity);
         Task Update(Routes entity);
+        Task DeleteRange(IEnumerable<Routes> entities);
     }
 }

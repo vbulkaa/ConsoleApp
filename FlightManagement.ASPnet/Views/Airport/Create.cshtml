@@ -1,8 +1,16 @@
 ﻿@model FlightManagement.DTO.Airport.AirportsForCreationDto
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Добавить аэропорт</h1>
 
-<form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" class="formsort">
     <div>
         <label>Название:</label>
         <input asp-for="Name" />
@@ -15,5 +23,6 @@
     </div>
     <button type="submit">Добавить</button>
 </form>
-
+</body>
+</html>
 

@@ -3,7 +3,7 @@ using FlightManagement.BLL.Services;
 using FlightManagement.DAL.Interfaces;
 using FlightManagement.DTO.Flights;
 using Microsoft.EntityFrameworkCore;
-using FlightManagement.DTO.Flights;
+
 using FlightManagement.DAL.models;
 using FlightManagement.models;
 using Microsoft.AspNetCore.Authorization;
@@ -29,34 +29,42 @@ namespace FlightManagement.ASPnet.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(string airportName = null, string routeID = null, TimeSpan? departureTime = null)
+        public async Task<IActionResult> Index(string airportName = null, string routeID = null, TimeSpan? departureTime = null, int page = 1, int pageSize = 10)
         {
-            // Получение всех расписаний авиарейсов с статусом "вылет"
             var departureSchedules = await GetFlightSchedulesByStatus("вылет");
-
-            // Получение всех расписаний авиарейсов с статусом "прилет"
             var arrivalSchedules = await GetFlightSchedulesByStatus("прилет");
 
-            // Объединяем результаты и удаляем дубликаты
             var flightSchedules = departureSchedules.Concat(arrivalSchedules)
                                                      .Distinct(new FlightScheduleComparer())
                                                      .ToList();
 
-            // Фильтрация по параметрам
             if (!string.IsNullOrEmpty(airportName))
             {
-                flightSchedules = flightSchedules.Where(fs => fs.DepartureAirportName.Contains(airportName) || fs.ArrivalAirportName.Contains(airportName)).ToList();
+                flightSchedules = flightSchedules.Where(fs =>
+                    fs.DepartureAirportName.Contains(airportName) ||
+                    fs.ArrivalAirportName.Contains(airportName)).ToList();
             }
 
             if (!string.IsNullOrEmpty(routeID))
             {
-                flightSchedules = flightSchedules.Where(fs => fs.RouteID.ToString().Equals(routeID)).ToList();
+                flightSchedules = flightSchedules.Where(fs =>
+                    fs.RouteID.ToString().Equals(routeID)).ToList();
             }
 
             if (departureTime.HasValue)
             {
-                flightSchedules = flightSchedules.Where(fs => fs.DepartureTime >= departureTime.Value).ToList();
+                flightSchedules = flightSchedules.Where(fs =>
+                    fs.DepartureTime >= departureTime.Value).ToList();
             }
+
+            // Calculate total pages
+            int totalCount = flightSchedules.Count();
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            flightSchedules = flightSchedules.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Passing pagination data to the view
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
 
             return View(flightSchedules.OrderBy(fs => fs.DepartureTime).ToList());
         }
@@ -107,10 +115,30 @@ namespace FlightManagement.ASPnet.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> IndexAdmin()
+        //public async Task<IActionResult> IndexAdmin()
+        //{
+        //    var flights = await _repository.FlightsRepository.GetAllEntities(false).ToListAsync();
+        //    return View(flights);
+        //}
+        public async Task<IActionResult> IndexAdmin(int page = 1, int pageSize = 10)
         {
-            var flights = await _repository.FlightsRepository.GetAllEntities(false).ToListAsync();
-            return View(flights);
+            // Получаем все рейсы как IQueryable
+            var flightsQuery = _repository.FlightsRepository.GetAllEntities(false);
+
+            // Получаем общее количество рейсов
+            var totalCount = await flightsQuery.CountAsync();
+
+            // Рассчитываем общее количество страниц
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            // Получаем рейсы для текущей страницы
+            var pagedFlights = await flightsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            // Передаем данные в представление
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
+
+            return View(pagedFlights);
         }
 
         [HttpGet]
@@ -230,36 +258,37 @@ namespace FlightManagement.ASPnet.Controllers
         }
 
 
+        
         [HttpPost, ActionName("Delete")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int flightID)
         {
-            // Сначала получаем рейс, чтобы убедиться, что он существует
+            // Получаем рейс, чтобы убедиться, что он существует
             var flight = await _repository.FlightsRepository.GetById(flightID, trackChanges: false);
             if (flight == null) return NotFound();
 
-            // Получаем маршрут по его ID
-            var routes = flight.Routes.ToList();
+            // Получаем все маршруты, связанные с рейсом
+            var routes = await _repository.RoutesRepository.GetByCondition(
+                r => r.FlightID == flightID,
+                trackChanges: false).ToListAsync();
+
+            // Удаляем все остановки, связанные с маршрутами
             if (routes.Any())
             {
-                // Для каждого маршрута получаем связанные остановки
-                foreach (var route in routes)
-                {
-                    var stops = await _repository.StopsRepository.GetByCondition(
-                        s => s.RouteID == route.RouteID,
-                        trackChanges: false).ToListAsync();
+                // Получаем все остановки для всех маршрутов
+                var stops = await _repository.StopsRepository.GetByCondition(
+                    s => routes.Select(r => r.RouteID).Contains(s.RouteID),
+                    trackChanges: false).ToListAsync();
 
-                    if (stops.Any())
-                    {
-                        await _repository.StopsRepository.DeleteRangeAsync(stops); // Удаляем связанные остановки
-                    }
+                if (stops.Any())
+                {
+                    await _repository.StopsRepository.DeleteRange(stops); // Асинхронное удаление остановок
                 }
 
-                // Теперь удаляем маршруты, связанные с рейсом
-                await _repository.RoutesRepository.DeleteRangeAsync(routes);
+                await _repository.RoutesRepository.DeleteRange(routes); // Асинхронное удаление маршрутов
             }
 
-            // Теперь можно удалить сам рейс
+            // Удаляем сам рейс
             await _repository.FlightsRepository.Delete(flight);
             await _repository.SaveAsync(); // Сохраняем изменения в базе данных
 

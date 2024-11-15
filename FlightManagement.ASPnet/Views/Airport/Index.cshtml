@@ -1,15 +1,23 @@
 ﻿@model FlightManagement.ASPnet.Models.AirportViewModel
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Аэропорты</h1>
 
-<form method="get" action="@Url.Action("Index")">
+<form method="get" class="formsort" action="@Url.Action("Index")">
     <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Поиск по названию или местоположению" />
-    <input type="submit" value="Поиск" />
+    <button type="submit">Поиск</button>
 </form>
 
 @if (User.IsInRole("Admin"))
 {
-    <a asp-action="Create">Добавить новый аэропорт</a>
+        <a asp-action="Create" class="btn btn-outline-primary me-2">Добавить новый аэропорт</a>
 }
 
 <table>
@@ -50,3 +58,24 @@
         }
     </tbody>
 </table>
+
+    <div class="pagination">
+    @if (ViewData["TotalPages"] != null && ViewData["CurrentPage"] != null)
+    {
+        int totalPages = (int)ViewData["TotalPages"];
+        int currentPage = (int)ViewData["CurrentPage"];
+
+        for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="?page=@i&searchTerm=@Model.SearchTerm&sortOrder=@Model.SortOrder">
+                @(i == currentPage ? $"{i}" : i.ToString())
+            </a>
+            @if (i < totalPages)
+            {
+                @: |
+            }
+        }
+    }
+</div>
+</body>
+</html>

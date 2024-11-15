@@ -18,6 +18,10 @@ namespace FlightManagement.ASPnet.Controllers
             return View();
         }
 
+        public IActionResult Home()
+        {
+            return View();
+        }
         public IActionResult Tables()
         {
             return View();

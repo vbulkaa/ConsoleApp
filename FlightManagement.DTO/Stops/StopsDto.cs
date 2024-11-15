@@ -14,5 +14,10 @@ namespace FlightManagement.DTO.Stops
         public TimeSpan ArrivalTime { get; set; }
         public TimeSpan DepartureTime { get; set; }
         public int StatusID { get; set; }
+
+        // Добавляем новые свойства
+        public string StatusName { get; set; }
+        public string AirportName { get; set; }
+        public string AirportLocation { get; set; }
     }
 }

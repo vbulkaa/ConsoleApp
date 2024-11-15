@@ -3,10 +3,18 @@
 @{
     ViewData["Title"] = "Расписание рейсов";
 }
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>@ViewData["Title"]</h1>
 
-<form method="get">
+    <form method="get" class="formsort">
     <div>
         <label for="airportName">Название аэропорта:</label>
         <input type="text" id="airportName" name="airportName" value="@Context.Request.Query["airportName"]" />
@@ -19,7 +27,7 @@
         <label for="departureTime">Время вылета:</label>
         <input type="time" id="departureTime" name="departureTime" value="@Context.Request.Query["departureTime"]" />
     </div>
-    <button type="submit">Фильтровать</button>
+    <button type="submit">Поиск</button>
 </form>
 
 <table>
@@ -61,3 +69,25 @@
         }
     </tbody>
 </table>
+
+    <div class="pagination">
+        @if (ViewData["TotalPages"] != null && ViewData["CurrentPage"] != null)
+        {
+            int totalPages = (int)ViewData["TotalPages"];
+            int currentPage = (int)ViewData["CurrentPage"];
+
+            for (int i = 1; i <= totalPages; i++)
+            {
+                <a href="?page=@i&airportName=@Context.Request.Query["airportName"]&routeID=@Context.Request.Query["routeID"]&departureTime=@Context.Request.Query["departureTime"]"
+                   class="@(i == currentPage ? "current" : "")">
+                    @(i == currentPage ? $"{i}" : i.ToString())
+                </a>
+                @if (i < totalPages)
+                {
+                    @: |
+                }
+            }
+        }
+    </div>
+</body>
+</html>

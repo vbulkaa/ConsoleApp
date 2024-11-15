@@ -1,8 +1,16 @@
 ﻿@model FlightManagement.DTO.Flights.FlightsForCreationDto
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Добавить рейс</h1>
 
-<form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" class="formsort">
     <div>
         <label>Номер рейса:</label>
         <input asp-for="FlightNumber" />
@@ -19,3 +27,5 @@
     </div>
     <button type="submit">Создать</button>
 </form>
+</body>
+</html>

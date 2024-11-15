@@ -1,83 +1,119 @@
-﻿@model dynamic
-
-<h1>Детали маршрута</h1>
-<h2>Маршрут ID: @Model.RouteID</h2>
-<p>Время вылета: @Model.DepartureTime</p>
-<p>Дата: @Model.Date.ToShortDateString()</p>
-
-<h3>Остановки</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Аэропорт</th>
-            <th>Локация</th>
-            <th>Время прибытия</th>
-            <th>Время отправления</th>
-            <th>Статус</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var stop in Model.Stops)
-        {
-            <tr>
-                <td>@stop.AirportName</td>
-                <td>@stop.AirportLocation</td>
-                <td>@stop.ArrivalTime</td>
-                <td>@stop.DepartureTime</td>
-                <td>@stop.StatusName</td>
-            </tr>
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали маршрута</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            
+            background-color: #f8f9fa;
+            
         }
-    </tbody>
-</table>
 
-<h3>Временная шкала остановок</h3>
-<canvas id="timelineChart" width="400" height="200"></canvas>
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('timelineChart').getContext('2d');
-    const stops = @Html.Raw(Json.Serialize(Model.Stops));
-
-    const labels = stops.map(stop => stop.AirportName);
-    const departureTimes = stops.map(stop => new Date(`1970-01-01T${stop.DepartureTime}:00`).getTime());
-    const arrivalTimes = stops.map(stop => new Date(`1970-01-01T${stop.ArrivalTime}:00`).getTime());
-
-    const timelineChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Время прибытия',
-                data: arrivalTimes,
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                yAxisID: 'y',
-            }, {
-                label: 'Время отправления',
-                data: departureTimes,
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-                yAxisID: 'y',
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    type: 'time',
-                    position: 'left',
-                    title: {
-                        display: true,
-                        text: 'Время'
-                    },
-                    ticks: {
-                        callback: function (value) {
-                            return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        }
-                    }
-                }
+            .timeline::after {
+                content: "";
+                position: absolute;
+                width: 6px;
+                background-color: white;
+                top: 20px;
+                bottom: 0;
+                left: 50%;
+                margin-left: -3px;
             }
+
+        ul {
+            list-style: none;
+            padding: 0;
         }
-    });
-</script>
+
+        .left, .right {
+            position: relative;
+            width: 45%;
+            padding: 10px;
+            margin: 10px;
+            background: #e5e9f3;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(191, 189, 189, 0.2);
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .dot {
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border: 4px dashed #559cff;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            left: calc(50% - 11px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Детали маршрута</h1>
+    <h2>Маршрут ID: @Model.RouteID</h2>
+    <p>Время вылета: @Model.DepartureTime</p>
+    <p>Дата: @Model.Date.ToShortDateString()</p>
+
+    <h3>Остановки</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Аэропорт</th>
+                <th>Локация</th>
+                <th>Время прибытия</th>
+                <th>Время отправления</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stop in Model.Stops)
+            {
+                <tr>
+                    <td>@stop.AirportName</td>
+                    <td>@stop.AirportLocation</td>
+                    <td>@stop.ArrivalTime</td>
+                    <td>@stop.DepartureTime</td>
+                    <td>@stop.StatusName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Временная шкала остановок</h3>
+    <ul class="timeline">
+        @for (int i = 0; i < Model.Stops.Count; i++)
+        {
+            var stop = Model.Stops[i];
+            var positionClass = i % 2 == 0 ? "left" : "right";
+            <li class="@positionClass">
+                <div class="dot"></div>
+                <div>
+                    <h4>@stop.AirportName</h4>
+                    <p>Прибытие: @stop.ArrivalTime</p>
+                    <p>Отправление: @stop.DepartureTime</p>
+                    <p>Статус: @stop.StatusName</p>
+                </div>
+            </li>
+        }
+    </ul>
+
+</body>
+</html>

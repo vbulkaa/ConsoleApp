@@ -1,26 +1,47 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿body{
+  margin: 0px;
+}
+.head {
+  position: fixed; /* Фиксированное положение */
+  top: 0; /* Привязка к верхней части страницы */
+  left: 0; /* Привязка к левой стороне */
+  right: 0; /* Привязка к правой стороне */
+  width: 100%; /* Полная ширина */
+  background-color: #fff; /* Фон шапки */
+  z-index: 1000; /* Обеспечить, чтобы шапка была над другими элементами */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для отделения от контента */
+}
+.navbar {
+  display: flex; /* Использовать flexbox для размещения элементов */
+  justify-content: space-between; /* Разделить элементы на обе стороны */
+  align-items: center; /* Центрирование по вертикали */
+  padding: 10px 20px; /* Отступы внутри шапки */
+}
 
+/* Стили для ссылок */
 a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  flex: 1; /* Позволить растягиваться */
 }
 
 a {
-  color: #0077cc;
+  color: #e0853e;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  color: #fff; /* Цвет текста */
+    background-color: #d9781e; /* Новый цвет фона */
+    border-color: #d9781e; 
 }
-
+.btn-primary:hover {
+  background-color: #91D5F6; /* Цвет фона при наведении (можно изменить) */
+}
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #e0853e;
+  border-color: #e0853e;
 }
 
 .border-top {
@@ -40,9 +61,31 @@ button.accept-policy {
 }
 
 .footer {
-  position: absolute;
+  margin-top: 20px;
+  padding-left: 20px;
+  background-color: #fff;
   bottom: 0;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+  height: 40px; /* Установите высоту футера на 40px */
+  line-height: 40px; /* Выравнивание текста по вертикали */
+  box-shadow: 0 -1px 0px rgba(0, 0, 0, 0.1); /* Легкая тень для отделения футера от контента */
+  text-align: left; /* Центрирование текста */
+  color: #555; /* Цвет текста футера */
 }
+.btn-outline-primary {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 50px;
+  width: 211px;
+  height: 49px;
+  background: #e0853e; /* Цвет фона кнопок */
+  border-radius: 50px; /* Закруглённые углы */
+  color: white; /* Цвет текста */
+  border: none; /* Убираем рамку */
+}
+
+.btn-outline-primary:hover {
+  background: #d9781e; /* Цвет фона при наведении */
+}
+

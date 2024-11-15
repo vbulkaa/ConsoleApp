@@ -23,7 +23,7 @@ namespace FlightManagement.ASPnet.Controllers
             _airportService = airportService;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index(string searchTerm, string sortOrder)
+        public async Task<IActionResult> Index(string searchTerm, string sortOrder, int page = 1, int pageSize = 10)
         {
             var airports = await _airportService.GetAll();
             var airportsDto = _mapper.Map<IEnumerable<AirportsDto>>(airports);
@@ -51,12 +51,21 @@ namespace FlightManagement.ASPnet.Controllers
                     break;
             }
 
+            // Пагинация
+            int totalCount = airportsDto.Count();
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            var paginatedAirports = airportsDto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
             var viewModel = new AirportViewModel
             {
-                Airports = airportsDto.ToList(),
+                Airports = paginatedAirports,
                 SearchTerm = searchTerm,
                 SortOrder = sortOrder
             };
+
+            // Передача значений пагинации в ViewData
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
 
             return View(viewModel);
         }

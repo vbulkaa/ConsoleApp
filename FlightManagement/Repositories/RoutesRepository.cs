@@ -20,7 +20,11 @@ namespace FlightManagement.DAL.Repositories
         {
             return await GetByCondition(r => r.RouteID == id, trackChanges).SingleOrDefaultAsync();
         }
-
+        public async Task DeleteRange(IEnumerable<Routes> entities)
+        {
+            dbContext.Set<Routes>().RemoveRange(entities);
+            await dbContext.SaveChangesAsync(); // Сохраняем изменения
+        }
         public async Task DeleteRangeAsync(IEnumerable<Routes> entities)
         {
             dbContext.Set<Routes>().RemoveRange(entities);
