@@ -57,6 +57,10 @@ namespace FlightManagement.DAL.Repositories
             await Task.CompletedTask; // Или удалите эту строку, если не нужно.
         }
 
-
+        public async Task DeleteRange(IEnumerable<Stops> entities)
+        {
+            dbContext.Set<Stops>().RemoveRange(entities);
+            await dbContext.SaveChangesAsync(); // Сохраняем изменения в базе данных
+        }
     }
 }

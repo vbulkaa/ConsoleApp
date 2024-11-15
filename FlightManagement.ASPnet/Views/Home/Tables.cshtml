@@ -1,6 +1,36 @@
-﻿<div class="main-menu">
-    <a asp-controller="Flight" asp-action="Index">Flights</a>
-    <a asp-controller="Airport" asp-action="Index">Airports</a>
-    <a asp-controller="Status" asp-action="Index">Statuses</a>
-</div>
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/home.css" />
+</head>
+<body>
+    <div class="image-container">
+        <img class="image1" src="~/images/image4.png" />
+        <img class="image2" src="~/images/image5.png" />
+        <img class="image3" src="~/images/image7.png" />
+        <img class="image4" src="~/images/image3.png" />
+        <img class="image5" src="~/images/image6.png" />
+
+        <div class="text-overlay">
+            <div class="main-title">Sovajet: Ваш Путеводитель по Авиаперелетам</div>
+            <div class="one-title">Быстро находить рейсы по всему миру</div>
+            <div class="two-title">Смотреть детали маршрутов и рейсов</div>
+            <div class="three-title">Фильтровать результаты по времени, цене и авиакомпаниям</div>
+        </div>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>
 

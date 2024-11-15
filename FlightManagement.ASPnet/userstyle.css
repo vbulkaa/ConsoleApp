@@ -1,0 +1,117 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa; /* Light background for contrast */
+  margin: 20px; /* Add some margin around the page */
+  padding-bottom: 60px; /* Add padding to the bottom to prevent overlap */
+}
+
+h1 {
+  text-align: center;
+  color: #333; /* Darker text for better readability */
+}
+
+/* Form Styles */
+form {
+  background-color: #fff; /* White background for the form */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Space below the form */
+}
+
+.form-group {
+  margin-bottom: 15px; /* Space between form fields */
+}
+
+label {
+  display: block; /* Labels on their own line */
+  margin-bottom: 5px;
+  color: #555; /* Slightly lighter than the heading */
+}
+
+input[type="text"],
+input[type="time"] {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding for comfort */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+}
+
+input[type="text"]:focus,
+input[type="time"]:focus {
+  border-color: #d9781e; /* Highlight border on focus */
+  outline: none; /* Remove outline */
+}
+
+/* Button Styles */
+button {
+  background-color: #d9781e; /* Button background color */
+  color: white; /* Button text color */
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none; /* Remove default border */
+  border-radius: 50px; /* Increased rounding */
+  cursor: pointer; /* Pointer on hover */
+}
+
+button:hover {
+  background-color: #91D5F6; /* Background color on hover */
+}
+
+/* Table Styles */
+table {
+  width: 100%; /* Full width table */
+  border-collapse: collapse; /* Merge table borders */
+  margin-top: 20px; /* Space above the table */
+}
+
+th, td {
+  padding: 10px; /* Cell padding */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #e5e5e5; /* Light bottom border */
+}
+
+thead {
+  background-color: #e0853e; /* Table header background */
+  color: #fff; /* White text */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Zebra striping for rows */
+}
+
+/* Pagination Styles */
+.pagination {
+  
+  display: flex; /* Использовать flexbox для компоновки */
+  flex-wrap: wrap; /* Позволить элементам переноситься на следующую строку */
+  justify-content: center; /* Центрировать ссылки пагинации */
+  margin-top: 20px; /* Отступ сверху пагинации */
+}
+
+.pagination a {
+  color: #e0853e; /* Color for pagination links */
+  padding: 10px 10px;
+  margin: 5px; /* Adjust margin to add space around links */
+  border: 1px solid #e0853e; /* Border for links */
+  border-radius: 4px; /* Rounded corners */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.pagination a:hover {
+  background-color: #d9781e; /* Background on hover */
+  color: white; /* Change text color on hover */
+}
+
+.pagination a.current {
+  background-color: #7c5b41; /* Highlight current page */
+  color: white; /* White text for current page */
+  border: none; /* No border for current page */
+}
+canvas {
+  margin: 20px 0; /* Space around the chart */
+  max-width: 100%; /* Responsive */
+}
+

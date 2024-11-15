@@ -16,3 +16,125 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa; 
+  margin: 0px;
+  
+  padding-bottom: 60px; 
+}
+.navbar {
+
+  top: 0; /* Привязка к верхней части страницы */
+  left: 0; /* Привязка к левой стороне */
+  right: 0; /* Привязка к правой стороне */
+ 
+}
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  background-color: #fff; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  margin-bottom: 20px; 
+}
+
+.form-group {
+  margin-bottom: 15px; 
+}
+
+label {
+  display: block; 
+  margin-bottom: 5px;
+  color: #555; 
+}
+
+input[type="text"],
+input[type="time"] {
+  width: 100%; 
+  padding: 10px;
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+}
+
+input[type="text"]:focus,
+input[type="time"]:focus {
+  border-color: #d9781e; 
+  outline: none; 
+}
+
+button {
+  background-color: #d9781e; 
+  color: white; 
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none; 
+  border-radius: 50px; 
+  cursor: pointer; 
+}
+form{
+  border-radius: 0px;
+  padding: 0px;
+}
+button:hover {
+  background-color: #91D5F6; 
+}
+
+table {
+  width: 100%; 
+  border-collapse: collapse;
+  margin-top: 20px; 
+}
+
+th, td {
+  padding: 10px; 
+  text-align: left; 
+  border-bottom: 1px solid #e5e5e5; 
+}
+
+thead {
+  background-color: #e0853e; 
+  color: #fff; 
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2; 
+}
+
+/* Pagination Styles */
+.pagination {
+  
+  display: flex; /* Использовать flexbox для компоновки */
+  flex-wrap: wrap; /* Позволить элементам переноситься на следующую строку */
+  justify-content: center; /* Центрировать ссылки пагинации */
+  margin-top: 20px; /* Отступ сверху пагинации */
+}
+.pagination a {
+  color: #e0853e; 
+  padding: 10px 10px;
+  margin: 5px; 
+  border: 1px solid #e0853e; 
+  border-radius: 4px; 
+  text-decoration: none; 
+  transition: background-color 0.3s; 
+}
+
+.pagination a:hover {
+  background-color: #d9781e; 
+  color: white; 
+}
+
+.pagination a.current {
+  background-color: #7c5b41; 
+  color: white; 
+  border: none; 
+}
+canvas {
+  margin: 20px 0; 
+  max-width: 100%; 
+}

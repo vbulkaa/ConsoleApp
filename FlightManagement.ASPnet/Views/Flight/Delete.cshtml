@@ -1,11 +1,21 @@
 ﻿@model FlightManagement.models.Flights;
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Удалить рейс</h1>
 
 <p>Вы уверены, что хотите удалить рейс @Model.FlightNumber?</p>
 
-<form asp-action="Delete" method="post">
+    <form asp-action="Delete" method="post" class="formsort">
     <input type="hidden" asp-for="FlightID" />
     <button type="submit">Удалить</button>
     <a asp-action="Index">Отмена</a>
 </form>
+</body>
+</html>

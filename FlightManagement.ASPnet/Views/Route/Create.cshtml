@@ -1,7 +1,16 @@
 ﻿@model FlightManagement.DTO.Rotes.RoutesForCreationDto
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Создать маршрут</h1>
 
-<form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" class="formsort">
     <div>
         <label for="FlightID">Номер рейса:</label>
         <select id="FlightID" asp-for="FlightID" asp-items="@(new SelectList(ViewBag.Flights, "FlightID", "FlightNumber"))"></select>
@@ -73,3 +82,5 @@
         stopCount++;
     }
 </script>
+</body>
+</html>

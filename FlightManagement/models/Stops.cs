@@ -21,5 +21,6 @@ namespace FlightManagement.models
         public Routes Route { get; set; }
         public Airports Airport { get; set; }
         public Statuses Status { get; set; }
+        
     }
 }

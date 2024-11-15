@@ -16,7 +16,7 @@ namespace FlightManagement.models
         public DateTime Date { get; set; }
 
         public virtual Flights Flight { get; set; }
-        public virtual ICollection<Stops> Stops { get; set; }
+        public ICollection<Stops> Stops { get; set; }
        // public virtual Airports Airport { get; set; }
       //  public object AirportID { get; set; }
     }

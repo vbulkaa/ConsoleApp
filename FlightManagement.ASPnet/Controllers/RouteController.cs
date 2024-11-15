@@ -14,6 +14,7 @@ using FlightManagement.DTO.Flights;
 using FlightManagement.DAL;
 using Microsoft.Data.SqlClient;
 using FlightManagement.DTO.Stops;
+using FlightManagement.ASPnet.Models;
 using FlightManagement.BLL.Services;
 using System.Linq; // Для методов LINQ
 using System.Collections.Generic; // Для работы с коллекциями
@@ -40,12 +41,11 @@ namespace FlightManagement.Controllers
         }
 
         // Получение списка всех маршрутов
-        public async Task<IActionResult> Index(string flightNumber, DateTime? departureDate, string sortOrder)
+        public async Task<IActionResult> Index(string flightNumber, DateTime? departureDate, string sortOrder, int page = 1, int pageSize = 10)
         {
             var flights = await _repositoryManager.FlightsRepository.GetAllEntities(false)
                .Select(f => new
                {
-
                    f.FlightID,
                    f.FlightNumber,
                    Routes = f.Routes.Select(r => new
@@ -68,13 +68,6 @@ namespace FlightManagement.Controllers
             }
 
             // Сортировка
-            /*flights = sortOrder switch
-            {
-
-                "date_desc" => flights.OrderByDescending(f => f.Routes.FirstOrDefault().Date).ToList(),
-                _ => flights.OrderBy(f => f.Routes.FirstOrDefault().Date).ToList(),
-            };//не работает с пустыми значениями*/
-
             flights = sortOrder switch
             {
                 "date_desc" => flights
@@ -85,13 +78,19 @@ namespace FlightManagement.Controllers
                     .ToList(),
             };
 
-            // Передача значений фильтров в ViewData
+            // Пагинация
+            int totalCount = flights.Count();
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            flights = flights.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Передача значений фильтров и пагинации в ViewData
             ViewData["CurrentFlightNumber"] = flightNumber;
             ViewData["CurrentDepartureDate"] = departureDate?.ToString("yyyy-MM-dd");
             ViewData["CurrentSort"] = sortOrder;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
 
             return View(flights);
-
         }
 
         // Создание маршрута
@@ -148,26 +147,28 @@ namespace FlightManagement.Controllers
 
             return RedirectToAction("Index");
         }
-       
 
-        // Отображение деталей маршрута
+
         public async Task<IActionResult> RouteDetails(int routeID)
         {
             var routeDetails = await _repositoryManager.RoutesRepository.GetAllEntities(false)
                 .Where(r => r.RouteID == routeID)
-                .Select(r => new
+                .Select(r => new RouteDetailsDto
                 {
-                    r.RouteID,
-                    r.DepartureTime,
-                    r.Date,
-                    Stops = r.Stops.Select(s => new
+                    RouteID = r.RouteID,
+                    DepartureTime = r.DepartureTime,
+                    Date = r.Date,
+                    Stops = r.Stops.Select(s => new StopsDto
                     {
-                        s.StopID,
-                        s.ArrivalTime,
-                        s.DepartureTime,
-                        AirportName = s.Airport.Name,
-                        AirportLocation = s.Airport.Location,
-                        StatusName = s.Status.StatusName
+                        StopID = s.StopID,
+                        RouteID = r.RouteID,
+                        ArrivalTime = s.ArrivalTime,
+                        DepartureTime = s.DepartureTime,
+                        AirportID = s.AirportID,
+                        StatusID = s.StatusID,
+                        AirportName = s.Airport.Name, // Убедитесь, что Airport.Name доступно
+                        AirportLocation = s.Airport.Location, // Убедитесь, что Airport.Location доступно
+                        StatusName = s.Status.StatusName // Добавьте это, если Status.Name доступно
                     }).OrderBy(s => s.DepartureTime).ToList()
                 })
                 .FirstOrDefaultAsync();
@@ -179,7 +180,6 @@ namespace FlightManagement.Controllers
 
             return View(routeDetails);
         }
-
         //// Отображение формы редактирования маршрута
         //[Authorize(Roles = "Admin")]
         //public async Task<IActionResult> Edit(int routeID)
@@ -224,7 +224,7 @@ namespace FlightManagement.Controllers
         //}
 
         // Обработка редактирования маршрута
-       
+
         public async Task<IActionResult> Edit(int routeID)
         {
             var flights = await _repositoryManager.FlightsRepository.GetAll(false);

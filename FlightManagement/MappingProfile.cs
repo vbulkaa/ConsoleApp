@@ -43,5 +43,6 @@ namespace FlightManagement.DAL
             CreateMap<StopsForCreationDto, Stops>();
             CreateMap<StopsForUpdateDto, Stops>();
         }
+
     }
 }

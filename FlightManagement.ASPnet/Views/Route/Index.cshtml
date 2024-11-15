@@ -1,8 +1,16 @@
 ﻿@model IEnumerable<dynamic>
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
 <h1>Список рейсов</h1>
 
-<form method="get">
+    <form method="get" class="formsort">
     <div>
         <label for="flightNumber">Номер рейса:</label>
         <input type="text" id="flightNumber" name="flightNumber" value="@ViewData["CurrentFlightNumber"]" />
@@ -12,14 +20,15 @@
         <input type="date" id="departureDate" name="departureDate" value="@ViewData["CurrentDepartureDate"]" />
     </div>
     <div>
-        <button type="submit">Фильтровать</button>
+        <button type="submit">Поиск</button>
     </div>
 </form>
 
 @if (User.IsInRole("Admin"))
 {
-    <a asp-controller="Route" asp-action="Create" class="btn btn-primary">Создать новый маршрут</a>
+        <a asp-controller="Route" asp-action="Create" class="btn btn-outline-primary me-2">Создать новый маршрут</a>
 }
+
 <table>
     <thead>
         <tr>
@@ -42,12 +51,11 @@
                     <td>@route.Date.ToShortDateString()</td>
                     <td>
                         <a href="@Url.Action("RouteDetails", "Route", new { routeID = route.RouteID })">Подробнее</a>
-
                         @if (User.IsInRole("Admin"))
                         {
-                            <span>|</span>
+                            
                             <a href="@Url.Action("Edit", "Route", new { routeID = route.RouteID })">Редактировать</a>
-                            <span>|</span>
+                            
                             <form method="post" action="@Url.Action("Delete", "Route", new { routeID = route.RouteID })" style="display:inline;">
                                 <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот маршрут?');">Удалить</button>
                             </form>
@@ -58,3 +66,24 @@
         }
     </tbody>
 </table>
+
+    <div class="pagination">
+    @if (ViewData["TotalPages"] != null && ViewData["CurrentPage"] != null)
+    {
+        int totalPages = (int)ViewData["TotalPages"];
+        int currentPage = (int)ViewData["CurrentPage"];
+
+        for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="?page=@i&flightNumber=@ViewData["CurrentFlightNumber"]&departureDate=@ViewData["CurrentDepartureDate"]">
+                @(i == currentPage ? $"{i}" : i.ToString())
+            </a>
+            @if (i < totalPages)
+            {
+                @: |
+            }
+        }
+    }
+</div>
+</body>
+</html>

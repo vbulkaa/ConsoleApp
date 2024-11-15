@@ -1,0 +1,9 @@
+.btn-primary {
+  color: #fff; /* Цвет текста */
+    background-color: #d9781e; /* Новый цвет фона */
+    border-color: #d9781e; 
+    border-radius: 50px;
+}
+.btn-primary:hover {
+  background-color: #035ad4; /* Цвет фона при наведении (можно изменить) */
+}
