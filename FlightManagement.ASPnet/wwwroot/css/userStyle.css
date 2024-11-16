@@ -21,7 +21,6 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa; 
   margin: 0px;
-  
   padding-bottom: 60px; 
 }
 .navbar {
@@ -38,12 +37,15 @@ h1 {
 
 form {
   background-color: #fff; 
-  padding: 20px;
-  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   margin-bottom: 20px; 
+  padding: 0px;
+  border-radius: 0px;
 }
-
+.formsort{
+  padding: 20px;
+  border-radius: 8px;
+}
 .form-group {
   margin-bottom: 15px; 
 }
@@ -77,10 +79,7 @@ button {
   border-radius: 50px; 
   cursor: pointer; 
 }
-form{
-  border-radius: 0px;
-  padding: 0px;
-}
+
 button:hover {
   background-color: #91D5F6; 
 }
