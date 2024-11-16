@@ -7,6 +7,7 @@ using FlightManagement.ASPnet.Extensions;
 using AutoMapper;
 using FlightManagement.DAL.models.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
