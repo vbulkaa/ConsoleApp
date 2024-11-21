@@ -11,12 +11,12 @@ namespace FlightManagement.DAL
         //private readonly ILogger<DbInitializer> _logger;
         private static readonly Random _random = new Random();
 
-        public static List<Airports> Airports { get; private set; }
-        public static List<Flights> Flights { get; private set; }
+        public static List<Airport> Airports { get; private set; }
+        public static List<Flight> Flights { get; private set; }
 
-        public static List<Routes> Routes { get; private set; } 
-        public static List<Stops> Stops { get; private set; } 
-        public static List<Statuses> Statuss { get; private set; }
+        public static List<Route> Routes { get; private set; } 
+        public static List<Stop> Stops { get; private set; } 
+        public static List<Status> Statuss { get; private set; }
 
         
         public static void Initialize(AppDbContext context, ILogger logger)
@@ -106,18 +106,18 @@ namespace FlightManagement.DAL
             };
 
             // Инициализация статусов
-            var statuses = new List<Statuses>
+            var statuses = new List<Status>
             {
-                 new Statuses { StatusName = "Вылет" },
-                 new Statuses { StatusName = "Промежуточный" },
-                 new Statuses { StatusName = "Прилет" }
+                 new Status { StatusName = "Вылет" },
+                 new Status { StatusName = "Промежуточный" },
+                 new Status { StatusName = "Прилет" }
             };
             
             context.Statuses.AddRange(statuses);
             context.SaveChanges();
 
             // Инициализация аэропортов
-            var airports = airportsData.Select(airport => new Airports
+            var airports = airportsData.Select(airport => new Airport
             {
                 Name = airport.Airport,
                 Location = airport.Location
@@ -127,7 +127,7 @@ namespace FlightManagement.DAL
             context.SaveChanges();
             logger.LogInformation($"{airports.Count} airports initialized.");
             // Инициализация рейсов
-            var flights = new List<Flights>();
+            var flights = new List<Flight>();
             var aircraftTypes = new[]
             {
                 "AirbusA320", "Boeing737", "Embraer175", "BombardierCRJ900",
@@ -138,7 +138,7 @@ namespace FlightManagement.DAL
             var random = new Random();
             for (int i = 1; i <= 2000; i++)
             {
-                var flight = new Flights
+                var flight = new Flight
                 {
                     FlightNumber = $"FL-{i:00}",
                     AircraftType = aircraftTypes[random.Next(aircraftTypes.Length)],
@@ -151,13 +151,13 @@ namespace FlightManagement.DAL
             context.SaveChanges();
             logger.LogInformation($"{flights.Count} flights initialized.");
             
-            var routes = new List<Routes>(); 
-            var stops = new List<Stops>();
+            var routes = new List<Route>(); 
+            var stops = new List<Stop>();
 
             // Инициализация маршрутов и остановок
             foreach (var flight in flights)
             {
-                var route = new Routes
+                var route = new Route
                 {
                     RouteID = flight.FlightID, // Используем FlightID как RouteID
                     FlightID = flight.FlightID,
@@ -175,7 +175,7 @@ namespace FlightManagement.DAL
                     var airportIndex = random.Next(airports.Count);
                     var statusIndex = j == 61 ? 61 : (j == 62 ? 62 : 63); // Вылет, промежуточный, прилет
 
-                    var stop = new Stops
+                    var stop = new Stop
                     {
                         StopID = flight.FlightID * 10 + j, // Уникальный StopID
                         RouteID = route.RouteID,

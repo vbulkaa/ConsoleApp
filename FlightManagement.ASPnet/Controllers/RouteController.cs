@@ -44,17 +44,17 @@ namespace FlightManagement.Controllers
         public async Task<IActionResult> Index(string flightNumber, DateTime? departureDate, string sortOrder, int page = 1, int pageSize = 10)
         {
             var flights = await _repositoryManager.FlightsRepository.GetAllEntities(false)
-               .Select(f => new
-               {
-                   f.FlightID,
-                   f.FlightNumber,
-                   Routes = f.Routes.Select(r => new
-                   {
-                       r.RouteID,
-                       r.DepartureTime,
-                       r.Date
-                   }).ToList()
-               }).ToListAsync();
+                .Select(f => new
+                {
+                    f.FlightID,
+                    f.FlightNumber,
+                    Routes = f.Routes.Select(r => new
+                    {
+                        r.RouteID,
+                        r.DepartureTime,
+                        r.Date
+                    }).ToList()
+                }).ToListAsync();
 
             // Фильтрация
             if (!string.IsNullOrEmpty(flightNumber))
@@ -70,12 +70,11 @@ namespace FlightManagement.Controllers
             // Сортировка
             flights = sortOrder switch
             {
-                "date_desc" => flights
-                    .OrderByDescending(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue)
-                    .ToList(),
-                _ => flights
-                    .OrderBy(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue)
-                    .ToList(),
+                "flightNumber_desc" => flights.OrderByDescending(f => f.FlightNumber).ToList(),
+                "flightNumber" => flights.OrderBy(f => f.FlightNumber).ToList(),
+                "date_desc" => flights.OrderByDescending(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
+                "date" => flights.OrderBy(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
+                _ => flights.OrderBy(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
             };
 
             // Пагинация
@@ -127,12 +126,12 @@ namespace FlightManagement.Controllers
             }
 
             // Преобразуем DTO в сущность Route и сохраняем в базе данных
-            var route = new Routes
+            var route = new models.Route
             {
                 FlightID = routeDto.FlightID,
                 DepartureTime = routeDto.DepartureTime,
                 Date = routeDto.Date,
-                Stops = routeDto.Stops.Select(s => new Stops
+                Stops = routeDto.Stops.Select(s => new Stop
                 {
                     AirportID = s.AirportID,
                     ArrivalTime = s.ArrivalTime,
@@ -265,68 +264,6 @@ namespace FlightManagement.Controllers
             return View(routesForUpdateDto);
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> Edit(RoutesForUpdateDto routesForUpdateDto, int routeID)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        // Повторно заполняем данные, если состояние модели недействительно
-        //        var flights = await _repositoryManager.FlightsRepository.GetAll(false);
-        //        var airports = await _repositoryManager.AirportsRepository.GetAll(false);
-        //        var statuses = await _repositoryManager.StatusesRepository.GetAll(false);
-
-        //        ViewBag.Flights = flights;
-        //        ViewBag.Airports = airports;
-        //        ViewBag.Statuses = statuses;
-
-        //        return View(routesForUpdateDto);
-        //    }
-
-        //    var route = await _repositoryManager.RoutesRepository.GetById(routesForUpdateDto.RouteID, trackChanges: true);
-        //    if (route == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    route.FlightID = routesForUpdateDto.FlightID;
-        //    route.DepartureTime = routesForUpdateDto.DepartureTime;
-        //    route.Date = routesForUpdateDto.Date;
-
-        //    var route_stop = await _repositoryManager.RoutesRepository
-        //             .GetByCondition(r => r.RouteID == routeID, trackChanges: false) // Получаем IQueryable
-        //             .Include(r => r.Stops) // Теперь можно использовать Include
-        //             .FirstOrDefaultAsync();
-
-        //    var existingStops = route_stop.Stops.ToList();
-        //    foreach (var stopDto in existingStops)
-        //    {
-        //        if (!routesForUpdateDto.Stops.Any(s => s.StopID == stopDto.StopID))
-        //        {
-        //            _repositoryManager.StopsRepository.Delete(stopDto);
-        //        }
-        //    }
-        //    foreach (var stopDto in routesForUpdateDto.Stops)
-        //    {
-        //        var existingstop = existingStops.FirstOrDefault(s => s.StopID == stopDto.StopID);
-        //        if (existingstop != null)
-        //        {
-        //            route.Stops = routesForUpdateDto.Stops.Select(s => new Stops
-        //            {
-        //                StopID = s.StopID,
-        //                AirportID = s.AirportID,
-        //                ArrivalTime = s.ArrivalTime,
-        //                DepartureTime = s.DepartureTime,
-        //                StatusID = s.StatusID
-        //            }).ToList();
-        //        }
-
-        //    }
-        //    await _repositoryManager.SaveAsync();
-
-        //    return RedirectToAction("Index");
-        //}
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(RoutesForUpdateDto routesForUpdateDto, int routeID)
@@ -385,7 +322,7 @@ namespace FlightManagement.Controllers
                 else
                 {
                     // Добавляем новую остановку
-                    var newStop = new Stops
+                    var newStop = new Stop
                     {
                         AirportID = stopDto.AirportID,
                         ArrivalTime = stopDto.ArrivalTime,
@@ -401,33 +338,42 @@ namespace FlightManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ConfirmDelete(int routeID)
+        {
+            var route = await _repositoryManager.RoutesRepository.GetById(routeID, trackChanges: false);
+            if (route == null)
+            {
+                return NotFound(); // Return 404 if the route is not found
+            }
+
+            return View(route); // Return the view with the route details
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int routeID)
         {
-            // Получаем маршрут по его ID
             var route = await _repositoryManager.RoutesRepository.GetById(routeID, trackChanges: false);
             if (route != null)
             {
-                // Получаем все остановки, связанные с маршрутом
+                // Get all stops associated with the route
                 var stops = await _repositoryManager.StopsRepository.GetAllEntities(false)
                     .Where(s => s.RouteID == route.RouteID)
                     .ToListAsync();
 
                 if (stops.Any())
                 {
-                    await _repositoryManager.StopsRepository.DeleteRangeAsync(stops); // Удаляем связанные остановки
+                    await _repositoryManager.StopsRepository.DeleteRangeAsync(stops); // Delete associated stops
                 }
 
-                // Удаляем маршрут
-                await _repositoryManager.RoutesRepository.DeleteRangeAsync(new List<Routes> { route });
+                await _repositoryManager.RoutesRepository.DeleteRangeAsync(new List<models.Route> { route });
             }
 
-            await _repositoryManager.SaveAsync(); // Сохраняем изменения в базе данных
-
+            await _repositoryManager.SaveAsync(); // Save changes to the database
             return RedirectToAction(nameof(Index));
         }
-
 
     }
 }

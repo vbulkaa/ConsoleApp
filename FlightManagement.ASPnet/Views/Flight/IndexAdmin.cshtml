@@ -1,6 +1,4 @@
-﻿@model IEnumerable<FlightManagement.models.Flights>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -13,12 +11,23 @@
 
     <a asp-action="Create" class="btn btn-outline-primary me-2">Добавить рейс</a>
 
+    <form method="get" class="formsort">
+        <input type="text" name="searchFlightNumber" placeholder="Поиск по номеру рейса" value="@ViewData["SearchFlightNumber"]" />
+        <input type="number" name="searchTicketPrice" placeholder="Поиск по цене билета" value="@ViewData["SearchTicketPrice"]" />
+        <button type="submit">Поиск</button>
+    </form>
+
     <table>
         <thead>
             <tr>
-                <th>Номер рейса</th>
-                <th>Тип самолета</th>
-                <th>Цена билета</th>
+                <th>
+                    <a asp-action="IndexAdmin" asp-route-sortOrder="FlightNumber">Номер рейса ↑</a>
+                    <a asp-action="IndexAdmin" asp-route-sortOrder="FlightNumber_desc">↓</a>
+                </th>
+                <th>
+                    <a asp-action="IndexAdmin" asp-route-sortOrder="TicketPrice">Цена билета ↑</a>
+                    <a asp-action="IndexAdmin" asp-route-sortOrder="TicketPrice_desc">↓</a>
+                </th>
                 <th>Действия</th>
             </tr>
         </thead>
@@ -27,14 +36,10 @@
             {
                 <tr>
                     <td>@flight.FlightNumber</td>
-                    <td>@flight.AircraftType</td>
                     <td>@flight.TicketPrice</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@flight.FlightID">Редактировать</a>
-                        <form asp-action="Delete" asp-route-flightID="@flight.FlightID" method="post" style="display:inline;">
-                            <button type="submit" >Удалить</button>
-                        </form>
-                        
+                        <a asp-action="Delete" asp-route-id="@flight.FlightID" class="btnDel">Удалить</a>
                     </td>
                 </tr>
             }
@@ -49,7 +54,7 @@
 
             for (int i = 1; i <= totalPages; i++)
             {
-                <a href="?page=@i"
+                <a href="?page=@i&searchFlightNumber=@ViewData["SearchFlightNumber"]&searchTicketPrice=@ViewData["SearchTicketPrice"]&sortOrder=@ViewData["CurrentSort"]"
                    class="@(i == currentPage ? "current" : "")">
                     @(i == currentPage ? $"{i}" : i.ToString())
                 </a>

@@ -9,7 +9,7 @@ using FlightManagement.DAL.models.enums;
 namespace FlightManagement.models
 {
     [Table("Statuses")]
-    public class Statuses
+    public class Status
     {
         public int StatusID { get; set; }
         public string StatusName { get; set; }

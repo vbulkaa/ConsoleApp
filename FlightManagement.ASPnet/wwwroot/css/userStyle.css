@@ -79,11 +79,26 @@ button {
   border-radius: 50px; 
   cursor: pointer; 
 }
-
+.btnDel {
+  background-color: #d9781e; 
+  color: white; 
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none; 
+  border-radius: 50px; 
+  cursor: pointer;
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Ensure it behaves like a block */
+}
+.btnDel:hover {
+  background-color: #c76c1a; /* A darker shade for hover effect */
+}
 button:hover {
   background-color: #91D5F6; 
 }
-
+.text-danger {
+  color: red; /* Change the color of the validation messages to red */
+}
 table {
   width: 100%; 
   border-collapse: collapse;

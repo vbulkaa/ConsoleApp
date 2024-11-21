@@ -11,10 +11,10 @@ namespace FlightManagement.BLL.Interfaces.Services
 {
     public interface IStopService
     {
-        Task<IEnumerable<Stops>> GetAll();
-        Task<IEnumerable<Stops>> Get(int rowsCount, string cacheKey);
-        Task<Stops> GetById(int id);
-        Task<Stops> Create(StopsForCreationDto stopForCreation);
+        Task<IEnumerable<Stop>> GetAll();
+        Task<IEnumerable<Stop>> Get(int rowsCount, string cacheKey);
+        Task<Stop> GetById(int id);
+        Task<Stop> Create(StopsForCreationDto stopForCreation);
         Task<bool> Update(StopsForUpdateDto stopForUpdate);
         Task<bool> Delete(int id);
     }

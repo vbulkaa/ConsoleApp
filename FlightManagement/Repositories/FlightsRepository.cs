@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Repositories
 {
-    public class FlightsRepository : RepositoryBase<Flights>, IFlightsRepository
+    public class FlightsRepository : RepositoryBase<Flight>, IFlightsRepository
     {
         private readonly AppDbContext _dbContext;
         private readonly IMemoryCache _memoryCache;
@@ -29,31 +29,31 @@ namespace FlightManagement.DAL.Repositories
         //    _memoryCache = memoryCache;
         //}
 
-        public async Task Create(Flights entity)
+        public async Task Create(Flight entity)
         {
             await _dbContext.Flights.AddAsync(entity);
         }
 
-        public async Task Delete(Flights entity)
+        public async Task Delete(Flight entity)
         {
             _dbContext.Flights.RemoveRange(entity);
 
         }
 
-        public async Task<IEnumerable<Flights>> GetAll(bool trackChanges) =>
+        public async Task<IEnumerable<Flight>> GetAll(bool trackChanges) =>
             await GetAllEntities(trackChanges).Include(f => f.Routes).ToListAsync();
 
-        public async Task<Flights> GetById(int id, bool trackChanges) =>
+        public async Task<Flight> GetById(int id, bool trackChanges) =>
             await GetByCondition(f => f.FlightID.Equals(id), trackChanges).SingleOrDefaultAsync();
 
-        public async Task Update(Flights entity)
+        public async Task Update(Flight entity)
         {
-            _dbContext.Set<Flights>().Update(entity);
+            _dbContext.Set<Flight>().Update(entity);
         }
 
-        public async Task<IEnumerable<Flights>> Get(int rowsCount, string cacheKey)
+        public async Task<IEnumerable<Flight>> Get(int rowsCount, string cacheKey)
         {
-            if (!_memoryCache.TryGetValue(cacheKey, out IEnumerable<Flights> entities))
+            if (!_memoryCache.TryGetValue(cacheKey, out IEnumerable<Flight> entities))
             {
                 entities = await dbContext.Flights.Take(rowsCount).ToListAsync();
                 if (entities != null)

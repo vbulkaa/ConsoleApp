@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FlightManagement.models
 {
     [Table("Stops")]
-    public class Stops
+    public class Stop
     {
         public int StopID { get; set; }
         public int RouteID { get; set; }
@@ -18,9 +18,9 @@ namespace FlightManagement.models
         public TimeSpan DepartureTime { get; set; }
         public int StatusID { get; set; }
 
-        public Routes Route { get; set; }
-        public Airports Airport { get; set; }
-        public Statuses Status { get; set; }
+        public Route Route { get; set; }
+        public Airport Airport { get; set; }
+        public Status Status { get; set; }
         
     }
 }

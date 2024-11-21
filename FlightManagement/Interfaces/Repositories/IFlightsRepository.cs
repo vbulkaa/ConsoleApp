@@ -9,15 +9,15 @@ namespace FlightManagement.DAL.Interfaces.Repositories
 {
     public interface IFlightsRepository
     {
-        Task<IEnumerable<Flights>> GetAll(bool trackChanges);
-        IQueryable<Flights> GetAllEntities(bool trackChanges);
-        Task<IEnumerable<Flights>> Get(int rowsCount, string cacheKey);
+        Task<IEnumerable<Flight>> GetAll(bool trackChanges);
+        IQueryable<Flight> GetAllEntities(bool trackChanges);
+        Task<IEnumerable<Flight>> Get(int rowsCount, string cacheKey);
         //Task<Flights> GetByIdAsync(int flightId);
-        Task<Flights> GetById(int id, bool trackChanges);
-        Task Create(Flights entity);
+        Task<Flight> GetById(int id, bool trackChanges);
+        Task Create(Flight entity);
        // Task Create(IEnumerable<Flights> entities);
-        Task Delete(Flights entity);
-        Task Update(Flights entity);
+        Task Delete(Flight entity);
+        Task Update(Flight entity);
        
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Repositories
 {
-    public class AirportsRepository : RepositoryBase<Airports>, IAirportsRepository
+    public class AirportsRepository : RepositoryBase<Airport>, IAirportsRepository
     {
         private readonly IMemoryCache _memoryCache; 
         private readonly AppDbContext _dbContext;       
@@ -27,20 +27,20 @@ public AirportsRepository(AppDbContext dbcontext, IMemoryCache memoryCache)
             return !trackChanges ? dbContext.Airports.AsNoTracking() : dbContext.Airports;
         }*/
 
-        public IQueryable<Airports> GetAllEntities(bool trackChanges)
+        public IQueryable<Airport> GetAllEntities(bool trackChanges)
         {
             return !trackChanges ?
                 _dbContext.Airports.AsNoTracking() :
                 _dbContext.Airports;
         }
 
-        public async Task Create(Airports entity)
+        public async Task Create(Airport entity)
         {
             await _dbContext.Airports.AddAsync(entity); // Добавляем аэропорт
            // await _dbContext.SaveChangesAsync();  
         }
         
-        public async Task Delete(Airports entity)
+        public async Task Delete(Airport entity)
         {
 
             DeleteEntity(entity);
@@ -48,21 +48,21 @@ public AirportsRepository(AppDbContext dbcontext, IMemoryCache memoryCache)
         }
            
 
-        public async Task<IEnumerable<Airports>> GetAll(bool trackChanges) =>
+        public async Task<IEnumerable<Airport>> GetAll(bool trackChanges) =>
      await GetAllEntities(trackChanges).ToListAsync();
 
-        public async Task<Airports> GetById(int id, bool trackChanges) =>
+        public async Task<Airport> GetById(int id, bool trackChanges) =>
             await GetByCondition(a => a.AirportID.Equals(id), trackChanges).SingleOrDefaultAsync();
 
-        public async Task Update(Airports entity)
+        public async Task Update(Airport entity)
         {
             UpdateEntity(entity);
            
         }
 
-        public async Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey)
+        public async Task<IEnumerable<Airport>> Get(int rowsCount, string cacheKey)
         {
-            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Airports> entities))
+            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Airport> entities))
             {
                 entities = await dbContext.Airports.Take(rowsCount).Include(e => e.AirportID).ToListAsync();
                 if (entities != null)

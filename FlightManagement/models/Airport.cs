@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FlightManagement.models
 {
     [Table("Airports")]
-    public class Airports
+    public class Airport
     {
         public int AirportID { get; set; }
 

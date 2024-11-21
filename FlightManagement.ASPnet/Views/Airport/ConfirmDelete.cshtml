@@ -1,0 +1,26 @@
+﻿@model FlightManagement.DTO.Airport.AirportsDto
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Подтверждение удаления аэропорта</title>
+    <link rel="stylesheet" href="~/css/userStyle.css" />
+</head>
+<body>
+    <h1>Подтвердите удаление аэропорта</h1>
+
+    <p>Вы уверены, что хотите удалить следующий аэропорт?</p>
+    <ul>
+        <li><strong>Аэропорт ID:</strong> @Model.AirportID</li>
+        <li><strong>Название:</strong> @Model.Name</li>
+        <li><strong>Локация:</strong> @Model.Location</li>
+    </ul>
+
+    <form class="formsort" method="post" action="@Url.Action("Delete", "Airport", new { id = Model.AirportID })">
+        <button type="submit" type="button">Удалить</button>
+        <a href="@Url.Action("Index", "Airport")" >Отмена</a>
+    </form>
+</body>
+</html>

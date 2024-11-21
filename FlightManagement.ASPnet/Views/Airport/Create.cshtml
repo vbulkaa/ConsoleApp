@@ -8,21 +8,36 @@
     <link rel="stylesheet" href="~/css/userStyle.css" />
 </head>
 <body>
-<h1>Добавить аэропорт</h1>
+    <h1>Добавить аэропорт</h1>
 
     <form asp-action="Create" method="post" class="formsort">
-    <div>
-        <label>Название:</label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div>
-        <label>Локация:</label>
-        <input asp-for="Location" />
-        <span asp-validation-for="Location"></span>
-    </div>
-    <button type="submit">Добавить</button>
-</form>
+        <div>
+            <label>Название:</label>
+            <input asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span> <!-- Validation message -->
+        </div>
+        <div>
+            <label>Локация:</label>
+            <input asp-for="Location" />
+            <span asp-validation-for="Location" class="text-danger"></span> <!-- Validation message -->
+        </div>
+        <button type="submit">Создать</button>
+    </form>
+
+    <!-- Include jQuery and jQuery Validation scripts if necessary -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(function () {
+            // Ensure that unobtrusive validation is enabled
+            $.validator.unobtrusive.adapters.add('required', function (options) {
+                options.rules['required'] = true;
+                options.messages['required'] = options.message;
+            });
+        });
+    </script>
 </body>
 </html>
 

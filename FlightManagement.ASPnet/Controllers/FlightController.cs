@@ -120,10 +120,39 @@ namespace FlightManagement.ASPnet.Controllers
         //    var flights = await _repository.FlightsRepository.GetAllEntities(false).ToListAsync();
         //    return View(flights);
         //}
-        public async Task<IActionResult> IndexAdmin(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> IndexAdmin(string searchFlightNumber = "", decimal? searchTicketPrice = null, string sortOrder = "FlightNumber", int page = 1, int pageSize = 10)
         {
             // Получаем все рейсы как IQueryable
             var flightsQuery = _repository.FlightsRepository.GetAllEntities(false);
+
+            // Фильтрация по номеру рейса
+            if (!string.IsNullOrEmpty(searchFlightNumber))
+            {
+                flightsQuery = flightsQuery.Where(f => f.FlightNumber.Contains(searchFlightNumber));
+            }
+
+            // Фильтрация по цене билета
+            if (searchTicketPrice.HasValue)
+            {
+                flightsQuery = flightsQuery.Where(f => f.TicketPrice == searchTicketPrice.Value);
+            }
+
+            // Сортировка
+            switch (sortOrder)
+            {
+                case "FlightNumber_desc":
+                    flightsQuery = flightsQuery.OrderByDescending(f => f.FlightNumber);
+                    break;
+                case "TicketPrice":
+                    flightsQuery = flightsQuery.OrderBy(f => f.TicketPrice);
+                    break;
+                case "TicketPrice_desc":
+                    flightsQuery = flightsQuery.OrderByDescending(f => f.TicketPrice);
+                    break;
+                default:
+                    flightsQuery = flightsQuery.OrderBy(f => f.FlightNumber);
+                    break;
+            }
 
             // Получаем общее количество рейсов
             var totalCount = await flightsQuery.CountAsync();
@@ -137,6 +166,9 @@ namespace FlightManagement.ASPnet.Controllers
             // Передаем данные в представление
             ViewData["TotalPages"] = totalPages;
             ViewData["CurrentPage"] = page;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SearchFlightNumber"] = searchFlightNumber;
+            ViewData["SearchTicketPrice"] = searchTicketPrice;
 
             return View(pagedFlights);
         }
@@ -162,7 +194,7 @@ namespace FlightManagement.ASPnet.Controllers
             if (ModelState.IsValid)
             {
                 // Маппинг DTO на модель Flights
-                var flight = new Flights
+                var flight = new Flight
                 {
                     FlightNumber = flightDto.FlightNumber,
                     AircraftType = flightDto.AircraftType,
@@ -225,7 +257,7 @@ namespace FlightManagement.ASPnet.Controllers
         if (ModelState.IsValid)
         {
             // Маппинг DTO на сущность
-            var flight = new Flights
+            var flight = new Flight
             {
                 FlightID = flightDto.FlightID,
                 FlightNumber = flightDto.FlightNumber,

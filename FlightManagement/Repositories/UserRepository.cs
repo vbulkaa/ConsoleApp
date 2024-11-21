@@ -62,7 +62,10 @@ namespace FlightManagement.DAL.Repositories
             return await _context.Users.OfType<AdminUser>().Cast<User>().ToListAsync();
         }
 
-       
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 
 }

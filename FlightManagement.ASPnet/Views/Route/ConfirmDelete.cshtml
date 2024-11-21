@@ -1,0 +1,27 @@
+﻿@model FlightManagement.models.Route 
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Подтвердите удаление маршрута</title>
+    <link rel="stylesheet" href="~/css/userStyle.css" />
+</head>
+<body>
+    <h1>Подтвердите удаление маршрута</h1>
+
+    <p>Вы уверены, что хотите удалить следующий маршрут?</p>
+    <ul>
+        <li><strong>Номер маршрута:</strong> @Model.RouteID</li>
+        <li><strong>Время вылета:</strong> @Model.DepartureTime</li>
+        <li><strong>Дата:</strong> @Model.Date.ToShortDateString()</li>
+    </ul>
+
+    <form class="formsort" method="post" action="@Url.Action("Delete", "Route", new { routeID = Model.RouteID })">
+        <button type="submit" type="button">Удалить</button>
+       
+        <a href="@Url.Action("Index", "Route")">Отмена</a>
+    </form>
+</body>
+</html>

@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 namespace FlightManagement.models
 {
     [Table("Routes")]
-    public class Routes
+    public class Route
     {
         public int RouteID { get; set; }
+        [ForeignKey("Flight")]
         public int FlightID { get; set; }
         public TimeSpan DepartureTime { get; set; }
         public DateTime Date { get; set; }
 
-        public virtual Flights Flight { get; set; }
-        public ICollection<Stops> Stops { get; set; }
+        public virtual Flight Flight { get; set; }
+        public ICollection<Stop> Stops { get; set; }
        // public virtual Airports Airport { get; set; }
       //  public object AirportID { get; set; }
     }
