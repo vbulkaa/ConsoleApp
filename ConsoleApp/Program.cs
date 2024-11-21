@@ -81,7 +81,7 @@ using (var context = new AppDbContext(builder.Options))
                 break;
 
             case "6":
-                var newAirport = new Airports();
+                var newAirport = new Airport();
                 Console.Write("Введите имя аэропорта: ");
                 newAirport.Name = Console.ReadLine();
                 Console.Write("Введите местоположение аэропорта: ");
@@ -90,7 +90,7 @@ using (var context = new AppDbContext(builder.Options))
                 break;
 
             case "7":
-                var newStop = new Stops();
+                var newStop = new Stop();
                 Console.Write("Введите ID маршрута: ");
                 newStop.RouteID = int.Parse(Console.ReadLine());
                 Console.Write("Введите ID аэропорта: ");

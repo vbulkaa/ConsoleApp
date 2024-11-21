@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Configuration
 {
-    public class StopConfig : IEntityTypeConfiguration<Stops>
+    public class StopConfig : IEntityTypeConfiguration<Stop>
     {
-        public void Configure(EntityTypeBuilder<Stops> builder)
+        public void Configure(EntityTypeBuilder<Stop> builder)
         {
             builder.HasKey(s => s.StopID); // Настройка первичного ключа
             builder.Property(s => s.ArrivalTime).IsRequired(); 

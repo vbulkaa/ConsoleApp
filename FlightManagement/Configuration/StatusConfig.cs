@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Configuration
 {
-    public class StatusConfig : IEntityTypeConfiguration<Statuses>
+    public class StatusConfig : IEntityTypeConfiguration<Status>
     {
-        public void Configure(EntityTypeBuilder<Statuses> builder)
+        public void Configure(EntityTypeBuilder<Status> builder)
         {
             builder.HasKey(s => s.StatusID); // Настройка первичного ключа
             builder.Property(s => s.StatusName).IsRequired();

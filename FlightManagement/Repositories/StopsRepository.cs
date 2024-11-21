@@ -11,7 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace FlightManagement.DAL.Repositories
 {
-    public class StopsRepository : RepositoryBase<Stops>, IStopsRepository
+    public class StopsRepository : RepositoryBase<Stop>, IStopsRepository
     {
         public StopsRepository(AppDbContext context, IMemoryCache memoryCache) : base(context, memoryCache) { }
         //public StopsRepository(AppDbContext dbContext)
@@ -19,28 +19,28 @@ namespace FlightManagement.DAL.Repositories
         //{
         //}
 
-        public async Task Create(Stops entity) =>
+        public async Task Create(Stop entity) =>
             await CreateEntity(entity);
 
-        public async Task Delete(Stops entity)
+        public async Task Delete(Stop entity)
         {
 
             DeleteEntity(entity);
             // await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Stops>> GetAll(bool trackChanges) =>
+        public async Task<IEnumerable<Stop>> GetAll(bool trackChanges) =>
             await GetAllEntities(trackChanges).ToListAsync();
 
-        public async Task<Stops> GetById(int id, bool trackChanges) =>
+        public async Task<Stop> GetById(int id, bool trackChanges) =>
             await GetByCondition(s => s.StopID.Equals(id), trackChanges).SingleOrDefaultAsync();
 
-        public async Task Update(Stops entity) =>
+        public async Task Update(Stop entity) =>
             await Update(entity);
 
-        public async Task<IEnumerable<Stops>> Get(int rowsCount, string cacheKey)
+        public async Task<IEnumerable<Stop>> Get(int rowsCount, string cacheKey)
         {
-            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Stops> entities))
+            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Stop> entities))
             {
                 entities = await dbContext.Stops.Take(rowsCount).Include(e => e.StopID).ToListAsync();
                 if (entities != null)
@@ -51,15 +51,15 @@ namespace FlightManagement.DAL.Repositories
             }
             return entities;
         }
-        public async Task DeleteRangeAsync(IEnumerable<Stops> entities)
+        public async Task DeleteRangeAsync(IEnumerable<Stop> entities)
         {
-            dbContext.Set<Stops>().RemoveRange(entities);
+            dbContext.Set<Stop>().RemoveRange(entities);
             await Task.CompletedTask; // Или удалите эту строку, если не нужно.
         }
 
-        public async Task DeleteRange(IEnumerable<Stops> entities)
+        public async Task DeleteRange(IEnumerable<Stop> entities)
         {
-            dbContext.Set<Stops>().RemoveRange(entities);
+            dbContext.Set<Stop>().RemoveRange(entities);
             await dbContext.SaveChangesAsync(); // Сохраняем изменения в базе данных
         }
     }

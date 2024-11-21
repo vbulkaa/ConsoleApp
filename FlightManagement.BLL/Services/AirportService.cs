@@ -30,7 +30,7 @@ namespace FlightManagement.BLL.Services
         }
 
 
-        public async Task<Airports> Create(AirportsForCreationDto entityForCreation)
+        public async Task<Airport> Create(AirportsForCreationDto entityForCreation)
         {
             if (entityForCreation == null)
             {
@@ -38,7 +38,7 @@ namespace FlightManagement.BLL.Services
             }
 
             // Маппинг
-            var entity = _mapper.Map<Airports>(entityForCreation);
+            var entity = _mapper.Map<Airport>(entityForCreation);
 
             // Обработка создания в репозитории
             try
@@ -77,13 +77,13 @@ namespace FlightManagement.BLL.Services
             return true;
         }
 
-        public async Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey) =>
+        public async Task<IEnumerable<Airport>> Get(int rowsCount, string cacheKey) =>
             await _repositoryManager.AirportsRepository.Get(rowsCount, cacheKey);
 
-        public async Task<IEnumerable<Airports>> GetAll() =>
+        public async Task<IEnumerable<Airport>> GetAll() =>
             await _repositoryManager.AirportsRepository.GetAll(false);
 
-        public async Task<Airports> GetById(int id) =>
+        public async Task<Airport> GetById(int id) =>
             await _repositoryManager.AirportsRepository.GetById(id, false);
 
         public async Task<bool> Update(AirportsForUpdateDto entityForUpdate)

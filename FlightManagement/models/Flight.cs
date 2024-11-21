@@ -11,7 +11,7 @@ using FlightManagement.DAL.models.enums;
 namespace FlightManagement.models
 {
     [Table("Flights")]
-    public class Flights
+    public class Flight
     {
         [Key]
         public int FlightID { get; set; }
@@ -21,7 +21,7 @@ namespace FlightManagement.models
         public string AircraftType { get; set; }
         [Range(0, double.MaxValue, ErrorMessage = "Цена должна быть положительной")]
         public decimal TicketPrice { get; set; }
-        public virtual ICollection<Routes> Routes { get; set; } = new List<Routes>(); 
+        public virtual ICollection<Route> Routes { get; set; } = new List<Route>(); 
 
 
         [NotMapped]

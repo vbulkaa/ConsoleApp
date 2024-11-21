@@ -11,10 +11,10 @@ namespace FlightManagement.BLL.Interfaces.Services
 {
     public interface IFlightService
     {
-        Task<IEnumerable<Flights>> GetAll();
-        Task<IEnumerable<Flights>> Get(int rowsCount, string cacheKey);
-        Task<Flights> GetById(int id);
-        Task<Flights> Create(FlightsForCreationDto flightForCreationDto);
+        Task<IEnumerable<Flight>> GetAll();
+        Task<IEnumerable<Flight>> Get(int rowsCount, string cacheKey);
+        Task<Flight> GetById(int id);
+        Task<Flight> Create(FlightsForCreationDto flightForCreationDto);
         Task<bool> Update(FlightsForUpdateDto flightForUpdateDto);
         Task<bool> Delete(int id);
     }

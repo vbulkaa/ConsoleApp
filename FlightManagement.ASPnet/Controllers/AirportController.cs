@@ -35,21 +35,16 @@ namespace FlightManagement.ASPnet.Controllers
             }
 
             // Сортировка
-            switch (sortOrder)
+            airportsDto = sortOrder switch
             {
-                case "name_desc":
-                    airportsDto = airportsDto.OrderByDescending(a => a.Name);
-                    break;
-                case "location":
-                    airportsDto = airportsDto.OrderBy(a => a.Location);
-                    break;
-                case "location_desc":
-                    airportsDto = airportsDto.OrderByDescending(a => a.Location);
-                    break;
-                default:
-                    airportsDto = airportsDto.OrderBy(a => a.Name);
-                    break;
-            }
+                "airportID_desc" => airportsDto.OrderByDescending(a => a.AirportID),
+                "airportID" => airportsDto.OrderBy(a => a.AirportID),
+                "name_desc" => airportsDto.OrderByDescending(a => a.Name),
+                "name" => airportsDto.OrderBy(a => a.Name),
+                "location_desc" => airportsDto.OrderByDescending(a => a.Location),
+                "location" => airportsDto.OrderBy(a => a.Location),
+                _ => airportsDto.OrderBy(a => a.Name),
+            };
 
             // Пагинация
             int totalCount = airportsDto.Count();
@@ -118,7 +113,25 @@ namespace FlightManagement.ASPnet.Controllers
             }
             return View(airportForUpdate);
         }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ConfirmDelete(int id)
+        {
+            var airport = await _airportService.GetById(id);
+            if (airport == null)
+            {
+                return NotFound(); // Return 404 if the airport is not found
+            }
 
+            var airportDto = new AirportsDto
+            {
+                AirportID = airport.AirportID,
+                Name = airport.Name,
+                Location = airport.Location
+            };
+
+            return View(airportDto); // Return the view with the airport details
+        }
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)

@@ -19,29 +19,29 @@ namespace FlightManagement.DAL
         public MappingProfile()
         {
             //Правила маппинга
-            CreateMap<Airports, AirportsDto>();
-            CreateMap<AirportsForCreationDto, Airports>();
-            CreateMap<AirportsForUpdateDto, Airports>();
+            CreateMap<Airport, AirportsDto>();
+            CreateMap<AirportsForCreationDto, Airport>();
+            CreateMap<AirportsForUpdateDto, Airport>();
 
             
-            CreateMap<Flights, FlightsDto>();
-            CreateMap<FlightsForCreationDto, Flights>();
-            CreateMap<FlightsForUpdateDto, Flights>();
+            CreateMap<Flight, FlightsDto>();
+            CreateMap<FlightsForCreationDto, Flight>();
+            CreateMap<FlightsForUpdateDto, Flight>();
 
            
-            CreateMap<Routes, RoutesDto>();
-            CreateMap<RoutesForCreationDto, Routes>();
-            CreateMap<RoutesForUpdateDto, Routes>();
+            CreateMap<Route, RoutesDto>();
+            CreateMap<RoutesForCreationDto, Route>();
+            CreateMap<RoutesForUpdateDto, Route>();
 
             
-            CreateMap<Statuses, StatusesDto>();
-            CreateMap<StatusesForCreationDto, Statuses>();
-            CreateMap<StatusesForUpdateDto, Statuses>();
+            CreateMap<Status, StatusesDto>();
+            CreateMap<StatusesForCreationDto, Status>();
+            CreateMap<StatusesForUpdateDto, Status>();
 
             
-            CreateMap<Stops, StopsDto>();
-            CreateMap<StopsForCreationDto, Stops>();
-            CreateMap<StopsForUpdateDto, Stops>();
+            CreateMap<Stop, StopsDto>();
+            CreateMap<StopsForCreationDto, Stop>();
+            CreateMap<StopsForUpdateDto, Stop>();
         }
 
     }

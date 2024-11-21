@@ -12,7 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace FlightManagement.DAL.Repositories
 {
-    public class StatusesRepository : RepositoryBase<Statuses>, IStatusesRepository
+    public class StatusesRepository : RepositoryBase<Status>, IStatusesRepository
     {
         private readonly AppDbContext _dbContext;
         public StatusesRepository(AppDbContext context, IMemoryCache memoryCache) : base(context, memoryCache) 
@@ -31,24 +31,24 @@ namespace FlightManagement.DAL.Repositories
         //        _dbContext.Statuses.AsNoTracking() :
         //        _dbContext.Statuses;
         //}
-        public async Task Create(Statuses entity) =>
+        public async Task Create(Status entity) =>
             await CreateEntity(entity);
 
-        public async Task Delete(Statuses entity) =>
+        public async Task Delete(Status entity) =>
             await Delete(entity);
 
-        public async Task<IEnumerable<Statuses>> GetAll(bool trackChanges) =>
+        public async Task<IEnumerable<Status>> GetAll(bool trackChanges) =>
             await GetAllEntities(trackChanges).ToListAsync();
 
-        public async Task<Statuses> GetById(int id, bool trackChanges) =>
+        public async Task<Status> GetById(int id, bool trackChanges) =>
             await GetByCondition(s => s.StatusID.Equals(id), trackChanges).SingleOrDefaultAsync();
 
-        public async Task Update(Statuses entity) =>
+        public async Task Update(Status entity) =>
             await Update(entity);
 
-        public async Task<IEnumerable<Statuses>> Get(int rowsCount, string cacheKey)
+        public async Task<IEnumerable<Status>> Get(int rowsCount, string cacheKey)
         {
-            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Statuses> entities))
+            if (!memoryCache.TryGetValue(cacheKey, out IEnumerable<Status> entities))
             {
                 entities = await dbContext.Statuses.Take(rowsCount).Include(e => e.StatusID).ToListAsync();
                 if (entities != null)

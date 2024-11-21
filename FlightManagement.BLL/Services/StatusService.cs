@@ -23,9 +23,9 @@ namespace FlightManagement.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<Statuses> Create(StatusesForCreationDto entityForCreation)
+        public async Task<Status> Create(StatusesForCreationDto entityForCreation)
         {
-            var entity = _mapper.Map<Statuses>(entityForCreation);
+            var entity = _mapper.Map<Status>(entityForCreation);
 
             await _repositoryManager.StatusesRepository.Create(entity);
             await _repositoryManager.SaveAsync();
@@ -48,13 +48,13 @@ namespace FlightManagement.BLL.Services
             return true;
         }
 
-        public async Task<IEnumerable<Statuses>> Get(int rowsCount, string cacheKey) =>
+        public async Task<IEnumerable<Status>> Get(int rowsCount, string cacheKey) =>
             await _repositoryManager.StatusesRepository.Get(rowsCount, cacheKey);
 
-        public async Task<IEnumerable<Statuses>> GetAll() =>
+        public async Task<IEnumerable<Status>> GetAll() =>
             await _repositoryManager.StatusesRepository.GetAll(false);
 
-        public async Task<Statuses> GetById(int id) =>
+        public async Task<Status> GetById(int id) =>
             await _repositoryManager.StatusesRepository.GetById(id, false);
 
         public async Task<bool> Update(StatusesForUpdateDto entityForUpdate)

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Configuration
 {
-    public class FlightConfig : IEntityTypeConfiguration<Flights>
+    public class FlightConfig : IEntityTypeConfiguration<Flight>
     {
-        public void Configure(EntityTypeBuilder<Flights> builder)
+        public void Configure(EntityTypeBuilder<Flight> builder)
         {
             builder.HasKey(f => f.FlightID); // Настройка первичного ключа
             builder.Property(f => f.FlightNumber).IsRequired(); 

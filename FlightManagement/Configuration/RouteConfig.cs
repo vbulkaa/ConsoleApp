@@ -10,9 +10,9 @@ using System.Reflection.Emit;
 
 namespace FlightManagement.DAL.Configuration
 {
-    public class RouteConfig : IEntityTypeConfiguration<Routes>
+    public class RouteConfig : IEntityTypeConfiguration<Route>
     {
-        public void Configure(EntityTypeBuilder<Routes> builder)
+        public void Configure(EntityTypeBuilder<Route> builder)
         {
             builder.HasKey(r => r.RouteID); // Настройка первичного ключа
             builder.Property(r => r.DepartureTime).IsRequired(); 

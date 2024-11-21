@@ -11,10 +11,10 @@ namespace FlightManagement.BLL.Interfaces.Services
     public interface IAirportService
     {
 
-        Task<IEnumerable<Airports>> GetAll();
-        Task<IEnumerable<Airports>> Get(int rowsCount, string cacheKey);
-        Task<Airports> GetById(int id);
-        Task<Airports> Create(AirportsForCreationDto airportForCreation);
+        Task<IEnumerable<Airport>> GetAll();
+        Task<IEnumerable<Airport>> Get(int rowsCount, string cacheKey);
+        Task<Airport> GetById(int id);
+        Task<Airport> Create(AirportsForCreationDto airportForCreation);
         Task<bool> Update(AirportsForUpdateDto airportForUpdate);
         Task<bool> Delete(int id);
     }

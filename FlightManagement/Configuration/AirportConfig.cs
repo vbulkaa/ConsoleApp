@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DAL.Configuration
 {
-    public class AirportConfig : IEntityTypeConfiguration<Airports>
+    public class AirportConfig : IEntityTypeConfiguration<Airport>
     {
-        public void Configure(EntityTypeBuilder<Airports> builder)
+        public void Configure(EntityTypeBuilder<Airport> builder)
         {
             builder.HasKey(a => a.AirportID); 
             builder.Property(a => a.Name).IsRequired(); 

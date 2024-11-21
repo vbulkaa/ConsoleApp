@@ -20,11 +20,11 @@ namespace FlightManagement.DAL
          : base(options)
         {
         }
-        public DbSet<Statuses> Statuses { get; set; }
-        public DbSet<Airports> Airports { get; set; }
-        public DbSet<Flights> Flights { get; set; }
-        public DbSet<Routes> Routes { get; set; }
-        public DbSet<Stops> Stops { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Airport> Airports { get; set; }
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<FlightManagement.models.Route> Routes { get; set; }
+        public DbSet<Stop> Stops { get; set; }
         public DbSet<User> Users { get; set; }
 
         //Применение конфигураций
@@ -37,7 +37,7 @@ namespace FlightManagement.DAL
              modelBuilder.ApplyConfiguration(new StatusConfig());
              modelBuilder.ApplyConfiguration(new StopConfig());
 
-            modelBuilder.Entity<Routes>()
+            modelBuilder.Entity<FlightManagement.models.Route>()
             .HasMany(r => r.Stops)
             .WithOne(s => s.Route)
             .OnDelete(DeleteBehavior.Cascade);

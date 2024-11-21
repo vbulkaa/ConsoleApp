@@ -17,17 +17,17 @@ public class Query
 
     }
 
-    public List<Airports> GetAllAirports()
+    public List<Airport> GetAllAirports()
     {
         return _context.Airports.ToList();
     }
 
-    public List<Statuses> GetAllStatuses()
+    public List<Status> GetAllStatuses()
     {
         return _context.Statuses.ToList();
     }
 
-    public List<Airports> GetFilteredAirports(string name)
+    public List<Airport> GetFilteredAirports(string name)
     {
         return _context.Airports.Where(a => a.Name.Contains(name)).ToList();
     }
@@ -51,7 +51,7 @@ public class Query
             .ToList();
     }
 
-    public List<Stops> GetFilteredStopsByFlight(int flightId)
+    public List<Stop> GetFilteredStopsByFlight(int flightId)
     {
         return _context.Stops
             .Include(s => s.Route)
@@ -59,13 +59,13 @@ public class Query
             .ToList();
     }
 
-    public void AddAirport(Airports airport)
+    public void AddAirport(Airport airport)
     {
         _context.Airports.Add(airport);
         _context.SaveChanges();
     }
 
-    public void AddStop(Stops stop)
+    public void AddStop(Stop stop)
     {
         _context.Stops.Add(stop);
         _context.SaveChanges();
