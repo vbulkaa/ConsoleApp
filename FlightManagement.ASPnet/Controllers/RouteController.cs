@@ -74,6 +74,8 @@ namespace FlightManagement.Controllers
                 "flightNumber" => flights.OrderBy(f => f.FlightNumber).ToList(),
                 "date_desc" => flights.OrderByDescending(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
                 "date" => flights.OrderBy(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
+                "routeID_desc" => flights.OrderByDescending(f => f.Routes.FirstOrDefault()?.RouteID).ToList(),
+                "routeID" => flights.OrderBy(f => f.Routes.FirstOrDefault()?.RouteID).ToList(),
                 _ => flights.OrderBy(f => f.Routes.FirstOrDefault()?.Date ?? DateTime.MaxValue).ToList(),
             };
 

@@ -33,6 +33,10 @@
         <thead>
             <tr>
                 <th>
+                    <a asp-action="Index" asp-route-sortOrder="routeID" asp-route-flightNumber="@ViewData["CurrentFlightNumber"]" asp-route-departureDate="@ViewData["CurrentDepartureDate"]">Номер маршрута ↑</a>
+                    <a asp-action="Index" asp-route-sortOrder="routeID_desc" asp-route-flightNumber="@ViewData["CurrentFlightNumber"]" asp-route-departureDate="@ViewData["CurrentDepartureDate"]">↓</a>
+                </th>
+                <th>
                     <a asp-action="Index" asp-route-sortOrder="flightNumber" asp-route-flightNumber="@ViewData["CurrentFlightNumber"]" asp-route-departureDate="@ViewData["CurrentDepartureDate"]">Номер рейса ↑</a>
                     <a asp-action="Index" asp-route-sortOrder="flightNumber_desc" asp-route-flightNumber="@ViewData["CurrentFlightNumber"]" asp-route-departureDate="@ViewData["CurrentDepartureDate"]">↓</a>
                 </th>
@@ -50,9 +54,10 @@
                 foreach (var route in flight.Routes)
                 {
                     <tr>
+                        <td>@route.RouteID</td>
                         <td>@flight.FlightNumber</td>
-                        <td>@route.DepartureTime</td>
                         <td>@route.Date.ToShortDateString()</td>
+                        <td>@route.DepartureTime</td>
                         <td>
                             <a href="@Url.Action("RouteDetails", "Route", new { routeID = route.RouteID })">Подробнее</a>
                             @if (User.IsInRole("Admin"))
