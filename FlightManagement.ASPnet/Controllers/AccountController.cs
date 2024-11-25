@@ -42,30 +42,7 @@ namespace FlightManagement.ASPnet.Controllers
             }
             return View(model);
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginUser model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
-        //        if (result.Succeeded)
-        //        {
-        //            var user = await _userManager.FindByNameAsync(model.UserName);
-        //            if (user != null)
-        //            {
-        //                // Проверка роли
-        //                if (await _userManager.IsInRoleAsync(user, "Admin"))
-        //                {
-        //                    return RedirectToAction("Index", "Home"); // Перенаправление на страницу админа
-        //                }
-        //                return RedirectToAction("Index", "Home"); // Для обычных пользователей
-        //            }
-        //        }
-        //        ModelState.AddModelError(string.Empty, "Неверный вход.");
-        //    }
-        //    return View(model);
-        //}
+        
 
         [HttpGet]
         public IActionResult Register() => View();

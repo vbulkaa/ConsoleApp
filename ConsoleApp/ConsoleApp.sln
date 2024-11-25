@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightManagement.BLL", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightManagement.ASP", "..\FlightManagement.ASP\FlightManagement.ASP.csproj", "{63C0BA45-406D-4ECE-984C-EA938E6F6632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement.ASPnet", "..\FlightManagement.ASPnet\FlightManagement.ASPnet.csproj", "{4C94B65D-BFAB-4263-A118-374279521877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightManagement.ASPnet", "..\FlightManagement.ASPnet\FlightManagement.ASPnet.csproj", "{4C94B65D-BFAB-4263-A118-374279521877}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightManagement.UnitTests", "..\FlightManagement.UnitTests\FlightManagement.UnitTests.csproj", "{5C3C1BE1-AAAB-45C4-99C4-CA1C6425BDB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +54,10 @@ Global
 		{4C94B65D-BFAB-4263-A118-374279521877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C94B65D-BFAB-4263-A118-374279521877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C94B65D-BFAB-4263-A118-374279521877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3C1BE1-AAAB-45C4-99C4-CA1C6425BDB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3C1BE1-AAAB-45C4-99C4-CA1C6425BDB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3C1BE1-AAAB-45C4-99C4-CA1C6425BDB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3C1BE1-AAAB-45C4-99C4-CA1C6425BDB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

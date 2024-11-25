@@ -124,6 +124,7 @@ namespace FlightManagement.Controllers
                 ViewBag.Airports = airports;
                 ViewBag.Statuses = statuses;
 
+               
                 return View(routeDto);
             }
 
@@ -181,50 +182,7 @@ namespace FlightManagement.Controllers
 
             return View(routeDetails);
         }
-        //// Отображение формы редактирования маршрута
-        //[Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> Edit(int routeID)
-        //{
-        //    var flights = await _repositoryManager.FlightsRepository.GetAll(false);
-        //    var airports = await _repositoryManager.AirportsRepository.GetAll(false);
-        //    var statuses = await _repositoryManager.StatusesRepository.GetAll(false);
-        //    var stops = await _repositoryManager.StopsRepository.GetAll(false);
-
-        //    var route = await _repositoryManager.RoutesRepository
-        //            .GetByCondition(r => r.RouteID == routeID, trackChanges: false) // Получаем IQueryable
-        //            .Include(r => r.Stops) // Теперь можно использовать Include
-        //            .FirstOrDefaultAsync();
-        //    if (route == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var routesForUpdateDto = new RoutesForUpdateDto
-        //    {
-        //        RouteID = route.RouteID,
-        //        FlightID = route.FlightID,
-        //        DepartureTime = route.DepartureTime,
-        //        Date = route.Date,
-        //        Stops = route.Stops.Select(s => new StopsForUpdateDto
-        //        {
-        //            StopID = s.StopID,
-        //            AirportID = s.AirportID,
-        //            ArrivalTime = s.ArrivalTime,
-        //            DepartureTime = s.DepartureTime,
-        //            StatusID = s.StatusID
-        //        }).ToList()
-        //    };
-
-
-
-        //    ViewBag.Flights = flights;
-        //    ViewBag.Airports = airports;
-        //    ViewBag.Statuses = statuses;
-
-        //    return View(routesForUpdateDto);
-        //}
-
-        // Обработка редактирования маршрута
+    
 
         public async Task<IActionResult> Edit(int routeID)
         {

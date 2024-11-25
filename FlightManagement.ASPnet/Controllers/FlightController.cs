@@ -3,8 +3,6 @@ using FlightManagement.BLL.Services;
 using FlightManagement.DAL.Interfaces;
 using FlightManagement.DTO.Flights;
 using Microsoft.EntityFrameworkCore;
-
-using FlightManagement.DAL.models;
 using FlightManagement.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlightManagement.DAL.models.enums;
+using FlightManagement.DAL.models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using FlightManagement.DAL;
+
 
 namespace FlightManagement.ASPnet.Controllers
 {
