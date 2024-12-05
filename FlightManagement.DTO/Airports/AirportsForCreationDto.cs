@@ -9,6 +9,7 @@ namespace FlightManagement.DTO.Airport
 {
     public class AirportsForCreationDto
     {
+        public int AirportID { get; set; }
         [Required(ErrorMessage = "Название аэропорта обязательно для заполнения")]
         [StringLength(100, ErrorMessage = "Название не должно превышать 100 символов")]
         public string Name { get; set; }
