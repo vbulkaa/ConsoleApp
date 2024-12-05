@@ -20,17 +20,6 @@ namespace FlightManagement.DAL.Repositories
             _dbContext = dbContext;
         }
 
-
-        //public StatusesRepository(AppDbContext dbContext)
-        //    : base(dbContext)
-        //{
-        //}
-        //public IQueryable<Statuses> GetAllEntities(bool trackChanges)
-        //{
-        //    return !trackChanges ?
-        //        _dbContext.Statuses.AsNoTracking() :
-        //        _dbContext.Statuses;
-        //}
         public async Task Create(Status entity) =>
             await CreateEntity(entity);
 

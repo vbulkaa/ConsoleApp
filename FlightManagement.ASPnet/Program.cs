@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FlightManagement.DAL;
 using FlightManagement.ASPnet.Extensions;
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 using FlightManagement.DAL.models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -53,6 +54,11 @@ builder.Services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 
@@ -77,12 +83,28 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 // Использование сессий
 app.UseSession();
 
 app.UseStaticFiles();
 app.UseRouting();
+
+// Swagger configuration in development
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+// Enable Swagger and Swagger UI
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = string.Empty; // Access Swagger UI at the root URL
+});
 
 // Настройка маршрутов
 app.Map("/Inicialize", Endpoints.Table);

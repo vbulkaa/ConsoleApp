@@ -18,7 +18,6 @@ namespace FlightManagement.models
 
         public virtual Flight Flight { get; set; }
         public ICollection<Stop> Stops { get; set; }
-       // public virtual Airports Airport { get; set; }
-      //  public object AirportID { get; set; }
+     
     }
 }

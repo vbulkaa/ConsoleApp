@@ -23,12 +23,6 @@ namespace FlightManagement.DAL.Repositories
 
 
 
-        //public FlightsRepository(AppDbContext dbContext, IMemoryCache memoryCache)
-        //    : base(dbContext)
-        //{
-        //    _memoryCache = memoryCache;
-        //}
-
         public async Task Create(Flight entity)
         {
             await _dbContext.Flights.AddAsync(entity);

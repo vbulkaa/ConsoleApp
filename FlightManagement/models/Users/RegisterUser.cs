@@ -45,7 +45,7 @@ namespace FlightManagement.DAL.models.Users
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 
-        //Поле для создания админа
+        
         public bool IsAdmin { get; set; }
     }
 }
