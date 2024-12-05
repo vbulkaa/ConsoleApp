@@ -22,11 +22,7 @@ public AirportsRepository(AppDbContext dbcontext, IMemoryCache memoryCache)
             _dbContext = dbContext;
         }
 
-        /*public IQueryable<Airports> GetAllEntities(bool trackChanges)
-        {
-            return !trackChanges ? dbContext.Airports.AsNoTracking() : dbContext.Airports;
-        }*/
-
+      
         public IQueryable<Airport> GetAllEntities(bool trackChanges)
         {
             return !trackChanges ?
